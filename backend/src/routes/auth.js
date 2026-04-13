@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 
 const generateToken = (userId) => {
-    return jwt.sign({userId}, process.env.JWT_SECERET, {expiresIn: "15d" });
+    return jwt.sign({userId}, process.env.JWT_SECRET, {expiresIn: "15d" });
 }
 
 export const register = async (req,res) => {
@@ -18,11 +18,16 @@ export const register = async (req,res) => {
             res.status(400).json({ message: "Password less than 6 characters"});
         }
 
-        const user = await prisma.user.create({data: { username, password, firstName, lastName, phoneNumber}});
+        const hashedPassword = await bcrypt.hash(password, 5);
+
+        const user = await prisma.user.create({data: { username, password: hashedPassword, firstName, lastName, phoneNumber}});
+
+        const token = generateToken(user.id);
         
         res.status(200).json({
             message: "User successfully created",
             user,
+            token
         })
 
     } catch (error) {
