@@ -43,22 +43,40 @@ export const login = async (req,res) => {
     try {
         const { username, password } = req.body;
 
+        if ( !username || !password ){
+            return res.status(400).json({
+                message: "Missing Username or Password"
+            });
+        }
+
         const user = await prisma.user.findUnique({
             where: { username: username}
         });
 
         if( !user ){
-            res.status(401).json({
+            return res.status(401).json({
                 message: "User not found"
             })
         }
 
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if ( !isMatch ){
+            return res.status(401).json({
+                message: "Login not successfull - wrong password"
+            })
+        }
+
+        const token = generateToken(user.id);
+
         res.status(200).json({
             message: "User logged in",
-            user
+            user,
+            token
         })
 
     } catch (error) {
+        console.log("Login error");
         res.status(400).json({
             message: "error",
             error: error.message
