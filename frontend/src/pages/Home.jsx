@@ -1,6 +1,6 @@
 import { useAuthStore } from "../store.js";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 function Home() {
@@ -8,6 +8,7 @@ function Home() {
 
   return (
     <div>
+
         <button onClick={logout}>
             <p>odjava</p>
         </button>
