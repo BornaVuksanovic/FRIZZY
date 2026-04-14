@@ -21,7 +21,7 @@ export default function Register() {
            console.log("error handleRegister"); 
         } 
         else{
-            navigate("/")
+            navigate("/clientProfile")
             console.log("uspjesan registriran");
         } 
     }
@@ -30,7 +30,7 @@ export default function Register() {
         if (token) {
             navigate("/");
         }
-    })
+    },[token,navigate]);
 
     return (
         <div>

@@ -18,16 +18,16 @@ export default function Login() {
            console.log("error handleLogin"); 
         } 
         else{
-            navigate("/")
+            navigate("/clientProfile")
             console.log("uspjesan login");
         } 
     }
 
     useEffect(() => {
         if (token) {
-            navigate("/");
+            navigate("/clientProfile");
         }
-    })
+    },[token, navigate]);
 
     return (
         <div>
