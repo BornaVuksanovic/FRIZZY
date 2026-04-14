@@ -1,0 +1,18 @@
+import { useAuthStore } from "../store.js";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+function Home() {
+  const { token, logout } = useAuthStore();
+
+  return (
+    <div>
+        <button onClick={logout}>
+            <p>odjava</p>
+        </button>
+    </div>
+  )
+}
+
+export default Home

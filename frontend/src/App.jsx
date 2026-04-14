@@ -1,28 +1,24 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Register from './pages/register.jsx';
+import Login from './pages/login.jsx';
+import Home from './pages/home.jsx';
+import { useAuthStore } from './store.js';
 
-function App() {
-  const [count, setCount] = useState(0)
+
+export default function App() {
+  const { token } = useAuthStore();
 
   return (
-    <>
-      <section id="center">
-        <div>
-          <h1>FRIZZY</h1>
-          <p>
-            Rezervacija termina u par klikova
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-   
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/" element={token ? <Home /> : <Navigate to="/login" />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
-export default App
+
