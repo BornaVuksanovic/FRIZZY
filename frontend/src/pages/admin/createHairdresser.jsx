@@ -2,6 +2,7 @@ import { useAuthStore } from "../../store.js";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 export default function CreateHairdresser() {
@@ -25,8 +26,12 @@ export default function CreateHairdresser() {
 
             console.log("Hairdresser created", response.data.user.username);
 
+            toast.success('Uspješno kreiran korisnik');
+            navigate("/adminPanel");
+
         } catch (error) {
             console.log("Hairdresser creation failed", error.message);
+            toast.error('Neuspješno kreiran korisnik');
         }finally{
             setIsLoading(false);
         }
