@@ -1,4 +1,4 @@
-import { useAuthStore } from "../store.js";
+import { useAuthStore } from "../../store.js";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
