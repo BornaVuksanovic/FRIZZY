@@ -6,9 +6,21 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
-    const { login, token } = useAuthStore();
+    const { login, token, user } = useAuthStore();
     const navigate = useNavigate();
-
+  
+    useEffect(()=>{
+        if (!user) return;
+        if( user.role == "CLIENT"){
+            navigate("/clientProfile");
+        }    
+        else if(user.role == "HAIRDRESSER"){
+            navigate("/hairdresserProfile");
+        }
+        else if(user.role == "ADMIN"){
+            navigate("/adminPanel");
+        }
+    }, [user]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -17,17 +29,11 @@ export default function Login() {
         if( !result.success ){
            console.log("error handleLogin"); 
         } 
-        else{
-            navigate("/clientProfile")
+        else{            
             console.log("uspjesan login");
         } 
     }
 
-    useEffect(() => {
-        if (token) {
-            navigate("/clientProfile");
-        }
-    },[token, navigate]);
 
     return (
         <div>
@@ -47,6 +53,7 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Unesi lozinku"
+                        type="password"
                     />
                 </div>
                 <button type="submit" onClick={handleLogin} >Prijavi se</button>

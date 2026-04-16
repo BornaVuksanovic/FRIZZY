@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import Register from './pages/register.jsx';
 import Login from './pages/login.jsx';
@@ -7,6 +7,7 @@ import ClientProfile from './pages/client/clientProfile.jsx';
 import MakeAppointment from './pages/client/makeAppointment.jsx';
 import HairdresserProfile from './pages/hairdresser/hairdresserProfile.jsx';
 import HairdresserDashboard from './pages/hairdresser/hairdresserDashboard.jsx';
+import AdminPanel from './pages/admin/adminPanel.jsx';
 import { useAuthStore } from './store.js';
 
 
@@ -28,6 +29,12 @@ export default function App() {
           <Link to="/hairdresserProfile">Profil</Link>  
         </nav>       
         )
+        : token && user.role == "ADMIN" ?
+        (
+        <nav>
+          <Link to="/adminPanel">Nadzorna Ploča</Link>     
+        </nav>           
+        )
         :
         (
         <nav>
@@ -38,17 +45,19 @@ export default function App() {
         )
       }
 
-    
+
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
 
-        <Route path="/clientProfile" element={token ? <ClientProfile /> : <Navigate to="/login" />} />
-        <Route path='/makeAppointment' element={token ? <MakeAppointment /> : <Navigate to="/login" />} />
+        <Route path="/clientProfile" element={token && user.role == "CLIENT" ? <ClientProfile /> : <Navigate to="/login" />} />
+        <Route path='/makeAppointment' element={token && user.role == "CLIENT" ? <MakeAppointment /> : <Navigate to="/login" />} />
 
-        <Route path="/hairdresserProfile" element={token ? <HairdresserProfile /> : <Navigate to="/login" />} />
-        <Route path='/hairdresserDashboard' element={token ? <HairdresserDashboard /> : <Navigate to="/login" />} />
+        <Route path="/hairdresserProfile" element={token && user.role == "HAIRDRESSER" ? <HairdresserProfile /> : <Navigate to="/login" />} />
+        <Route path='/hairdresserDashboard' element={token && user.role == "HAIRDRESSER" ? <HairdresserDashboard /> : <Navigate to="/login" />} />
+
+        <Route path='/adminPanel' element={token && user.role == "ADMIN" ? <AdminPanel /> : <Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   )
