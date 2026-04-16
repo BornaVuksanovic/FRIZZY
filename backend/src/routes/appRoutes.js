@@ -1,10 +1,10 @@
 import express from "express";
 import { protectRoute } from "../middleware.js";
-import { tokenTest } from "./app.js";
+import { getHairdressers } from "./app.js";
 
 const appRouter = express.Router();
 
-appRouter.route('/testToken').get(protectRoute,tokenTest);
+appRouter.route('/getHairdressers').get(protectRoute,getHairdressers);
 
 
 export default appRouter;

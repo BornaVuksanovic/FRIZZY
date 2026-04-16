@@ -1,21 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 
-export const tokenTest = async (req,res) => {
-    try {
-    
-        const user = req.user;
-  
+export const getHairdressers = async (req,res) => {
+    try {  
+        const hairdressers = await Prisma.user.findMany();
+
         res.status(200).json({
-            message: "token tested",
-            user,
-    
+            message: "List of hairdressers",
+            hairdressers
         })
 
     } catch (error) {
         res.status(400).json({
-            message: "token test failed",
+            message: "Faild to fetch hairdressers",
             error: error.message
         })
     }

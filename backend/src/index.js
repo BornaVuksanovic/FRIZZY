@@ -16,7 +16,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 1000;
 
 app.use('/api/auth', authRouter);
-app.use('api/app', appRouter);
+app.use('/api/app', appRouter);
 
 async function ConnectDB() {
     try {

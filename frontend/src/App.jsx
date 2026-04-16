@@ -18,32 +18,6 @@ export default function App() {
 
   return (
     <>
-    <Toaster 
-      position='top-right'
-      toastOptions={{
-        style: {
-          fontSize: '24px',
-          padding: '20px',
-          width: '400px',
-          height: '100px'
-        },
-        success: {
-          duration: 3000,
-          style: {
-              background: '#ecfdf5', 
-              border: '1px solid #10b981',
-          }
-        },
-        error: {
-          duration: 3000,
-          style: {
-              background: '#fef2f2',
-              border: '1px solid #ef4444',
-          }
-        }
-      }}
-    />
-
     <BrowserRouter>
       {token && user.role == "CLIENT" ? (
         <nav>
@@ -91,6 +65,32 @@ export default function App() {
         <Route path='/createHairdresser' element={token && user.role == "ADMIN" ? <CreateHairdresser /> : <Navigate to="/login" />} />   
       </Routes>
     </BrowserRouter>
+
+    <Toaster 
+      position='top-right'
+      toastOptions={{
+        style: {
+          fontSize: '24px',
+          padding: '20px',
+          width: '400px',
+          height: '100px'
+        },
+        success: {
+          duration: 3000,
+          style: {
+              background: '#ecfdf5', 
+              border: '1px solid #10b981',
+          }
+        },
+        error: {
+          duration: 3000,
+          style: {
+              background: '#fef2f2',
+              border: '1px solid #ef4444',
+          }
+        }
+      }}
+    />
     </>
     
   )
