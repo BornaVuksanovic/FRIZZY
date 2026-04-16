@@ -1,40 +1,40 @@
-import { useAuthStore } from "../store.js";
+import { useAuthStore } from "../../store.js";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
-export default function Register() {
+export default function CreateHairdresser() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
     const[firstName, setFirstName] = useState("");
     const[lastName, setLastName] = useState("");
     const[phoneNumber, setPhoneNumber] = useState("");
-    const { register, token, user } = useAuthStore();
+    const[role, setRole] = useState("HAIRDRESSER");
+    const[isLoading, setIsLoading] = useState(true);
+    const { token, user } = useAuthStore();
     const navigate = useNavigate();
 
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        const result = await register(username, password, firstName, lastName, phoneNumber);
+        setIsLoading(true)
+        try {
+            const formData = {username, password, firstName, lastName, phoneNumber, role};
+            const response = await axios.post("http://localhost:1000/api/auth/registerHairdresser", formData); 
 
-        if( !result.success ){
-           console.log("error handleRegister"); 
-        } 
-        else{
-            navigate("/clientProfile")
-            console.log("uspjesan registriran");
-        } 
+            console.log("Hairdresser created", response.data.user.username);
+
+        } catch (error) {
+            console.log("Hairdresser creation failed", error.message);
+        }finally{
+            setIsLoading(false);
+        }
     }
-
-    useEffect(()=>{
-        if( user.role == "CLIENT"){
-            navigate("/clientProfile");
-        }    
-    }, [user]);
 
     return (
         <div>
-            <h1>Registracija</h1>
+            <h1>Kreiraj račun</h1>
             <form>
                 <div>
                     <p>Korisničko ime</p>
@@ -77,7 +77,7 @@ export default function Register() {
                     />
                 </div>
 
-                <button type="submit" onClick={handleRegister} >Registriraj se</button>
+                <button type="submit" onClick={handleRegister} >Kreiraj</button>
             </form>
         </div>
     )

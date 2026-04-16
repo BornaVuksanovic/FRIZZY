@@ -8,6 +8,7 @@ import MakeAppointment from './pages/client/makeAppointment.jsx';
 import HairdresserProfile from './pages/hairdresser/hairdresserProfile.jsx';
 import HairdresserDashboard from './pages/hairdresser/hairdresserDashboard.jsx';
 import AdminPanel from './pages/admin/adminPanel.jsx';
+import CreateHairdresser from './pages/admin/createHairdresser.jsx';
 import { useAuthStore } from './store.js';
 
 
@@ -32,6 +33,7 @@ export default function App() {
         : token && user.role == "ADMIN" ?
         (
         <nav>
+          <Link to="/createHairdresser">Kreiraj Račun Radniku</Link>
           <Link to="/adminPanel">Nadzorna Ploča</Link>     
         </nav>           
         )
@@ -58,6 +60,7 @@ export default function App() {
         <Route path='/hairdresserDashboard' element={token && user.role == "HAIRDRESSER" ? <HairdresserDashboard /> : <Navigate to="/login" />} />
 
         <Route path='/adminPanel' element={token && user.role == "ADMIN" ? <AdminPanel /> : <Navigate to="/login" />} />
+        <Route path='/createHairdresser' element={token && user.role == "ADMIN" ? <CreateHairdresser /> : <Navigate to="/login" />} />   
       </Routes>
     </BrowserRouter>
   )
