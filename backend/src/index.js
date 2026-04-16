@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors"; // da react moze pricati s backendom
 import {PrismaClient} from "@prisma/client";
 import authRouter from "./routes/authRoutes.js";
-import authRouter from "./routes/appRoutes.js";
+import appRouter from "./routes/appRoutes.js";
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 1000;
 
 app.use('/api/auth', authRouter);
-app.use('api/app', authRouter);
+app.use('api/app', appRouter);
 
 async function ConnectDB() {
     try {

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function ClientProfile() {
+export default function HairdresserProfile() {
     const { token, user, logout } = useAuthStore();
     const navigate = useNavigate();
 

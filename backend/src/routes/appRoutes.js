@@ -7,4 +7,4 @@ const appRouter = express.Router();
 appRouter.route('/testToken').get(protectRoute,tokenTest);
 
 
-export default authRouter;
+export default appRouter;

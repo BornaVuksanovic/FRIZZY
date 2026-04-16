@@ -1,17 +1,16 @@
-import { useAuthStore } from "../store.js";
+import { useAuthStore } from "../../store.js";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 
-function Home() {
+export default function MakeAppointment() {
   const { token } = useAuthStore();
 
   return (
     <div>
-      <h1>FRIZZY</h1>
-        <h2>Rezervacija termina za modernu frizuru u par klikova</h2>
+      <h1>Rezervacija termina</h1>
+        <h2>odaberi termin</h2>
     </div>
   )
 }
 
-export default Home
