@@ -58,7 +58,7 @@ export const useAuthStore = create((set) => ({
             if (!token) return set({ user: null, isLoading: false }); 
 
             const response = await axios.get("http://localhost:1000/api/app/testToken", {
-                headers: { Authorization: `Bearer : ${token}` }
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             set({ user: response.data.user, token: token });

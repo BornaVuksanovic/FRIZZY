@@ -27,3 +27,20 @@ export const getHairdressers = async (req,res) => {
         })
     }
 }
+
+export const testToken = async (req,res) => {
+    try {  
+        const user = req.user
+
+        res.status(200).json({
+            message: "successfull test",
+            user
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: "unseccessfull test",
+            error: error.message
+        })
+    }
+}

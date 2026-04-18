@@ -11,10 +11,23 @@ import AdminPanel from './pages/admin/adminPanel.jsx';
 import CreateHairdresser from './pages/admin/createHairdresser.jsx';
 import { useAuthStore } from './store.js';
 import { Toaster } from "react-hot-toast";
+import { ClipLoader } from 'react-spinners';
 
 
 export default function App() {
-  const { token, user } = useAuthStore();
+  const { token, user, checkStore, isLoading } = useAuthStore();
+
+
+
+  useEffect(()=>{
+    checkStore();
+  },[])
+
+  if( isLoading ){
+    console.log("1. useEffect se pokrenuo");
+    return <ClipLoader />
+  }
+  console.log("2. se pokrenuo");
 
   return (
     <>
