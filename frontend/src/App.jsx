@@ -24,10 +24,8 @@ export default function App() {
   },[])
 
   if( isLoading ){
-    console.log("1. useEffect se pokrenuo");
     return <ClipLoader />
-  }
-  console.log("2. se pokrenuo");
+  } 
 
   return (
     <>

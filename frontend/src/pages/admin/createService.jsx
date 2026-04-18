@@ -5,30 +5,21 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 
-export default function CreateHairdresser() {
-    const[username, setUsername] = useState("");
-    const[password, setPassword] = useState("");
-    const[firstName, setFirstName] = useState("");
-    const[lastName, setLastName] = useState("");
-    const[phoneNumber, setPhoneNumber] = useState("");
-    const[role, setRole] = useState("HAIRDRESSER");
+export default function CreateService() {
+    const[serviceName, setServiceName] = useState("");
+    const[price, setPrice] = useState(0);
+    const[duration, setDuration] = useState(0);
     const[isLoading, setIsLoading] = useState(true);
     const { token, user } = useAuthStore();
     const navigate = useNavigate();
 
 
-    const handleRegister = async (e) => {
+    const handleCreation = async (e) => {
         e.preventDefault();
         setIsLoading(true)
         try {
             const formData = {username, password, firstName, lastName, phoneNumber, role};
-            const response = await axios.post("http://localhost:1000/api/app/registerHairdresser",
-                {formData},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                }}
-            ); 
+            const response = await axios.post("http://localhost:1000/api/auth/registerHairdresser", formData); 
 
             console.log("Hairdresser created", response.data.user.username);
 

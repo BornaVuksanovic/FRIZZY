@@ -27,7 +27,7 @@ export default function Login() {
         const result = await login(username, password);
 
         if( !result.success ){
-           console.log("error handleLogin"); 
+           console.log("error handleLogin",result); 
         } 
         else{            
             console.log("uspjesan login");
