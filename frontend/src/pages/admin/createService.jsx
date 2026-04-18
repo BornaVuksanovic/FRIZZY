@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 
 export default function CreateService() {
-    const[serviceName, setServiceName] = useState("");
+    const[name, setName] = useState("");
     const[price, setPrice] = useState(0);
     const[duration, setDuration] = useState(0);
     const[isLoading, setIsLoading] = useState(true);
@@ -18,17 +18,26 @@ export default function CreateService() {
         e.preventDefault();
         setIsLoading(true)
         try {
-            const formData = {username, password, firstName, lastName, phoneNumber, role};
-            const response = await axios.post("http://localhost:1000/api/auth/registerHairdresser", formData); 
+            const priceFloat = parseFloat(price);
+            const durationInt = parseInt(duration);
+            const formData = {name: name, price:priceFloat, duration: durationInt};
+            const response = await axios.post("http://localhost:1000/api/app/createService", 
+                formData,
+                {
+                    headers:{
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            ); 
 
-            console.log("Hairdresser created", response.data.user.username);
+            console.log("Service created", response.data.service.name);
 
-            toast.success('Uspješno kreiran korisnik');
+            toast.success('Uspješno kreirana usluga');
             navigate("/adminPanel");
 
         } catch (error) {
-            console.log("Hairdresser creation failed", error.message);
-            toast.error('Neuspješno kreiran korisnik');
+            console.log("Service creation failed", error.message);
+            toast.error('Neuspješno kreirana usluga');
         }finally{
             setIsLoading(false);
         }
@@ -36,50 +45,36 @@ export default function CreateService() {
 
     return (
         <div>
-            <h1>Kreiraj račun</h1>
+            <h1>Kreiraj uslugu</h1>
             <form>
                 <div>
-                    <p>Korisničko ime</p>
+                    <p>Naziv</p>
                     <input 
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        placeholder="Unesi korisničko ime"
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        placeholder="Unesi naziv usluge"
                     />
                 </div>
                 <div>
-                    <p>Lozinka</p>
+                    <p>Cijena</p>
                     <input 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Unesi lozinku"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                        placeholder="Unesi cijenu"
+                        type="float"
                     />
                 </div>
                 <div>
-                    <p>Ime</p>
+                    <p>Vremensko trajanje</p>
                     <input 
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="Unesi Ime"
-                    />
-                </div>
-                <div>
-                    <p>Prezime</p>
-                    <input 
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Unesi prezime"
-                    />
-                </div>
-                <div>
-                    <p>Broj telefona</p>
-                    <input 
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="Unesi broj telefona"
+                        value={duration}
+                        onChange={(e) => setDuration(e.target.value)}
+                        placeholder="Unesi vrijeme trajanja"
+                        type="int"
                     />
                 </div>
 
-                <button type="submit" onClick={handleRegister} >Kreiraj</button>
+                <button type="submit" onClick={handleCreation} >Kreiraj uslugu</button>
             </form>
         </div>
     )
