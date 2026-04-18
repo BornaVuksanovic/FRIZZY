@@ -87,6 +87,23 @@ export const getHairdressers = async (req,res) => {
     }
 }
 
+export const getServices = async (req,res) => {
+    try {  
+        const services = await Prisma.service.findMany();
+
+        res.status(200).json({
+            message: "List of services",
+            services
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: "Faild to fetch services",
+            error: error.message
+        })
+    }
+}
+
 export const testToken = async (req,res) => {
     try {  
         const user = req.user

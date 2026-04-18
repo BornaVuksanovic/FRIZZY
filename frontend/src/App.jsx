@@ -4,7 +4,7 @@ import Register from './pages/register.jsx';
 import Login from './pages/login.jsx';
 import Home from './pages/home.jsx';
 import ClientProfile from './pages/client/clientProfile.jsx';
-import MakeAppointment from './pages/client/makeAppointment.jsx';
+import CreateAppointment from './pages/client/createAppointment.jsx';
 import HairdresserProfile from './pages/hairdresser/hairdresserProfile.jsx';
 import HairdresserDashboard from './pages/hairdresser/hairdresserDashboard.jsx';
 import AdminPanel from './pages/admin/adminPanel.jsx';
@@ -69,7 +69,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
 
         <Route path="/clientProfile" element={token && user.role == "CLIENT" ? <ClientProfile /> : <Navigate to="/login" />} />
-        <Route path='/makeAppointment' element={token && user.role == "CLIENT" ? <MakeAppointment /> : <Navigate to="/login" />} />
+        <Route path='/createAppointment' element={token && user.role == "CLIENT" ? <CreateAppointment /> : <Navigate to="/login" />} />
 
         <Route path="/hairdresserProfile" element={token && user.role == "HAIRDRESSER" ? <HairdresserProfile /> : <Navigate to="/login" />} />
         <Route path='/hairdresserDashboard' element={token && user.role == "HAIRDRESSER" ? <HairdresserDashboard /> : <Navigate to="/login" />} />
