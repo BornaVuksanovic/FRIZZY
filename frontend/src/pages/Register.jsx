@@ -27,7 +27,7 @@ export default function Register() {
     }
 
     useEffect(()=>{
-        if( user.role == "CLIENT"){
+        if( user?.role == "CLIENT"){
             navigate("/clientProfile");
         }    
     }, [user]);

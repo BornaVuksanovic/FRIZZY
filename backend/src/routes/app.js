@@ -4,7 +4,16 @@ const Prisma = new PrismaClient();
 
 export const getHairdressers = async (req,res) => {
     try {  
-        const hairdressers = await Prisma.user.findMany();
+        const hairdressers = await Prisma.user.findMany({
+            where: {
+                role: "HAIRDRESSER"
+            },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true
+            }
+        });
 
         res.status(200).json({
             message: "List of hairdressers",

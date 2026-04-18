@@ -46,8 +46,8 @@ export default function AdminPanel() {
         <div>
         <h1>ADMIN</h1>
             <h2>Panel</h2>
-            <p>{hairdressers[0].username}</p>
-            <p>{hairdressers[1].username}</p>
+            <h3>Zaposlenici:</h3>
+            {hairdressers?.map(h => <p key={h.id}>{h.firstName} {h.lastName}</p>)}    
         </div>
         <div>
             <button onClick={logout}>
