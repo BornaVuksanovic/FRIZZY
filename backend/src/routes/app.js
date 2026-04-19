@@ -81,6 +81,29 @@ export const createAppointment = async (req,res) => {
     }
 }
 
+export const getHairdresserAppointments = async (req, res) => {
+    try {
+        const appointments = await Prisma.appointment.findMany({
+            where: {
+                hairdresserId: req.body.hairdresserId
+            },
+            select: {
+                startDate:true,
+                service:true
+            }
+        });
+        res.status(200).json({
+            message: "Hairdressers appointments",
+            appointments
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: "Faild to fetch hairdressers appointments",
+            error: error.message
+        })
+    }
+}
+
 export const getHairdressers = async (req,res) => {
     try {  
         const hairdressers = await Prisma.user.findMany({
