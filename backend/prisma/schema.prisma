@@ -32,7 +32,7 @@ model User {
 
 model Appointment {
   id Int @id @default(autoincrement())
-  dateTime DateTime
+  startDate DateTime
 
   clientId Int
   client User @relation("ClientRelation", fields: [clientId], references: [id])

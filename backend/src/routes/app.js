@@ -61,6 +61,26 @@ export const createService = async (req,res) => {
     }
 }
 
+export const createAppointment = async (req,res) => {
+    try {
+        const {startDate, clientId, hairdresserId, serviceId} = req.body;
+
+        const appointment = await Prisma.appointment.create({data: {startDate, clientId, hairdresserId, serviceId}});
+
+        res.status(201).json({
+            message: "Appointment successfully creted",
+            appointment
+        })
+
+    } catch (error) {
+        console.log("Error appointment creation", error);   
+        res.status(400).json({
+            message: "Appointment creation failed",
+            error: error.message
+        })    
+    }
+}
+
 export const getHairdressers = async (req,res) => {
     try {  
         const hairdressers = await Prisma.user.findMany({
