@@ -33,7 +33,7 @@ export default function App() {
     <BrowserRouter>
       {token && user.role == "CLIENT" ? (
         <nav>
-          <Link to="/makeAppointment">Rezervacija</Link>    
+          <Link to="/createAppointment">Rezervacija</Link>    
           <Link to="/clientProfile">Profil</Link>  
         </nav>
         )
