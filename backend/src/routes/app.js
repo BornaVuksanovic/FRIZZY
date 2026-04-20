@@ -138,9 +138,7 @@ export const getClientAppointments = async (req, res) => {
             },
             select: {
                 startDate:true,
-                service:{
-                    select: { name: true, duration: true}
-                }
+                service: true
             }
         });
         res.status(200).json({
