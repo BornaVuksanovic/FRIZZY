@@ -81,11 +81,57 @@ export default function CreateAppointment() {
     mutate(formData); // pokrecem mutaciju i saljem formData u mutationFn
   }
 
+  const isSlotBusy = (slotTime) => { //slot time npr. 10:30
+    if (!appointments) return false;
+    const [hours, minutes] = slotTime.split(":").map(Number); // button vrijednost pretvaramu Date
+    const slotDate = new Date(startDate);
+    slotDate.setHours(hours,minutes,0,0);
 
+    return (appointments || []).some(app => {
+      const start = new Date(app.startDate).getTime();
+      const end = start + (app.service.duration * 60000);
+
+      const currentSlotTime = slotDate.getTime();
+
+      return currentSlotTime >= start && currentSlotTime < end;
+    })
+  }
+
+  const appointmentsQuery = useQuery({
+    // ako se nesta od ovoga promjeni, okini funkciju
+    queryKey:['appointments', hairdresser, startDate.toDateString()],
+    queryFn: async() => {
+      if( hairdresser == "") return [];
+
+      const response = await axios.get("http://localhost:1000/api/app/getHairdresserAppointments", {
+          params: {
+            hairdresserId: parseInt(hairdresser),
+            date: startDate.toISOString()
+          },
+          
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+          
+      });
+      
+      return response.data.appointments;
+    },
+    onError: (error) => {
+      console.error("Appointment fetch failed", error.message);
+      toast.error('Neuspješno dohvacanje appointmenta');
+    },
+    
+    enabled: () => {
+     !!hairdresser && step === 2 // Pokreni tek kad imamo frizera i kad smo na Step 2
+    }
+    
+  });
 
   const services = servicesQuery.data;
   const hairdressers = hairdressersQuery.data;
-  const isLoading = servicesQuery.isLoading || hairdressersQuery.isLoading;
+  const appointments =appointmentsQuery.data;
+  const isLoading = servicesQuery.isLoading || hairdressersQuery.isLoading || appointmentsQuery.isLoading;
 
 
 
@@ -132,8 +178,8 @@ export default function CreateAppointment() {
             <DatePicker 
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              showTimeSelect // omogućuje biranje sati/minuta
-              timeIntervals={30}
+             // omogućuje biranje sati/minuta
+              
               timeFormat="HH:mm"
               dateFormat="dd.MM.yyyy HH:mm"
               minTime={new Date(new Date().setHours(9,0,0))}
@@ -144,21 +190,26 @@ export default function CreateAppointment() {
             />
             
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-          {["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"].map(vrijeme => (
-            <button 
-              key={vrijeme}
-              type="button"
-              className={startDate.getHours() === parseInt(vrijeme) ? 'active' : ''}
-              onClick={() => {
-                const [h, m] = vrijeme.split(":");
-                const noviDatum = new Date(startDate);
-                noviDatum.setHours(parseInt(h), parseInt(m), 0);
-                setStartDate(noviDatum);
-              }}
-            >
-              {vrijeme}
-            </button>
-          ))}
+          {["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"].map(slot => {
+            const busy = isSlotBusy(slot);
+            return (
+              <button 
+                key={slot}
+                type="button"
+                disabled={busy} // ako je zauzet, ne moze se kliknut
+                onClick={() => {
+                  const [h, m] = slot.split(":").map(Number);
+                  const noviDatum = new Date(startDate);
+                  noviDatum.setHours(h,m,0,0);
+                  setStartDate(noviDatum);
+                }}
+              >
+                {slot}
+              </button>
+            )
+          }
+
+          )}
           </div>
 
             <button type="submit" onClick={handleCreation} disabled={isPending}>{isPending? "Kreiranje..." : "Rezerviraj"}</button>

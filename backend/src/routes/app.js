@@ -83,13 +83,32 @@ export const createAppointment = async (req,res) => {
 
 export const getHairdresserAppointments = async (req, res) => {
     try {
+        const { hairdresserId, date} = req.query;
+
+
+        if (!hairdresserId) {
+            return res.status(400).json({ message: "Nema ID-a frizera" });
+        }
+
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0,0,0,0);
+
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23,59,59,999);
+
         const appointments = await Prisma.appointment.findMany({
             where: {
-                hairdresserId: req.body.hairdresserId
+                hairdresserId: parseInt(hairdresserId),
+                startDate: {
+                    gte: startOfDay,
+                    lte: endOfDay
+                }
             },
             select: {
                 startDate:true,
-                service:true
+                service:{
+                    select: { duration: true }
+                }
             }
         });
         res.status(200).json({
@@ -97,6 +116,7 @@ export const getHairdresserAppointments = async (req, res) => {
             appointments
         })
     } catch (error) {
+        console.error("PRISMA ERROR:", error);
         res.status(400).json({
             message: "Faild to fetch hairdressers appointments",
             error: error.message
