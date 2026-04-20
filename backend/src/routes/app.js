@@ -124,6 +124,38 @@ export const getHairdresserAppointments = async (req, res) => {
     }
 }
 
+export const getClientAppointments = async (req, res) => {
+    try {
+        const { clientId } = req.query;
+
+        if (!clientId) {
+            return res.status(400).json({ message: "Nema ID-a" });
+        }
+
+        const appointments = await Prisma.appointment.findMany({
+            where: {
+                clientId: parseInt(clientId),
+            },
+            select: {
+                startDate:true,
+                service:{
+                    select: { name: true, duration: true}
+                }
+            }
+        });
+        res.status(200).json({
+            message: "Client appointments",
+            appointments
+        })
+    } catch (error) {
+        console.error("PRISMA ERROR:", error);
+        res.status(400).json({
+            message: "Faild to get client appointments",
+            error: error.message
+        })
+    }
+}
+
 export const getHairdressers = async (req,res) => {
     try {  
         const hairdressers = await Prisma.user.findMany({

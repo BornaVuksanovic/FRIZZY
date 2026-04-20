@@ -7,6 +7,7 @@ import { createService } from "./app.js";
 import { getServices } from "./app.js";
 import { createAppointment } from "./app.js";
 import { getHairdresserAppointments } from "./app.js";
+import { getClientAppointments } from "./app.js";
 
 const appRouter = express.Router();
 
@@ -16,6 +17,7 @@ appRouter.route('/testToken').get(protectRoute,testToken);
 appRouter.route('/registerHairdresser').post(protectRoute,registerHairdresser);
 appRouter.route('/createService').post(protectRoute,createService);
 appRouter.route('/createAppointment').post(protectRoute,createAppointment);
-appRouter.route('/getHairdresserAppointments').get(protectRoute,getHairdresserAppointments)
+appRouter.route('/getHairdresserAppointments').get(protectRoute,getHairdresserAppointments);
+appRouter.route('/getClientAppointments').get(protectRoute,getClientAppointments);
 
 export default appRouter;
