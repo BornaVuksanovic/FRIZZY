@@ -107,7 +107,10 @@ export const getHairdresserAppointments = async (req, res) => {
             select: {
                 startDate:true,
                 service:{
-                    select: { duration: true }
+                    select: { duration: true, name: true }
+                },
+                client: {
+                    select: { firstName: true, lastName: true, phoneNumber: true}
                 }
             }
         });

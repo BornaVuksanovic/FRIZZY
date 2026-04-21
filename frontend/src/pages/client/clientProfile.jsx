@@ -75,8 +75,14 @@ export default function ClientProfile() {
             </div>
             <div>
                 <h2>Prošli termini</h2>
-                {appointments?.map( app => {return new Date(app.startDate) < new Date() ? (<p key={app.id}>{app.service.name} ({app.service.price}€ {app.service.duration}min) {app.startDate}</p>) : (null)})}
-            </div>        
+                {pastApp?.length > 0 ? 
+                    ( pastApp.map(app => ( <p key={app.id}>{app.service.name} - {new Date(app.startDate).toLocaleString('hr-HR')}</p>)))
+                    :
+                    (
+                        <p>Nema prošlih termina</p>
+                    )
+                }
+            </div>
             <div>
                 <button onClick={logout}>
                     <p>odjava</p>
