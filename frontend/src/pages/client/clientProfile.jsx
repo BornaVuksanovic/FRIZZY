@@ -39,6 +39,10 @@ export default function ClientProfile() {
 
   const appointments = appointmentsQuery.data;
  
+  const now = new Date();
+  const futureApp = appointments?.filter(app => new Date(app.startDate) >= now );
+  const pastApp = appointments?.filter(app=> new Date(app.startDate) < now );
+
   const isLoading = !user || appointmentsQuery.isLoading;
 
     if (isLoading) {
@@ -59,8 +63,20 @@ export default function ClientProfile() {
             </div>
             <div>
                 <h2>Rezervirani termini</h2>
-                {appointments?.map( app => <p key={app.id}>{app.service.name} ({app.service.price}€ {app.service.duration}min) {app.startDate}</p>)}
+                {futureApp?.length > 0 ? (
+                    futureApp.map(app => (
+                        <p key={app.id}>{app.service.name} - {new Date(app.startDate).toLocaleString('hr-HR')}</p>
+
+                    ))
+                ) :
+                (
+                    <p>Nema rezerviranih termina</p>
+                )}
             </div>
+            <div>
+                <h2>Prošli termini</h2>
+                {appointments?.map( app => {return new Date(app.startDate) < new Date() ? (<p key={app.id}>{app.service.name} ({app.service.price}€ {app.service.duration}min) {app.startDate}</p>) : (null)})}
+            </div>        
             <div>
                 <button onClick={logout}>
                     <p>odjava</p>
