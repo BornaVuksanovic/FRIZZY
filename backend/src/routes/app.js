@@ -119,13 +119,51 @@ export const getHairdresserAppointments = async (req, res) => {
             appointments
         })
     } catch (error) {
-        console.error("PRISMA ERROR:", error);
+        console.error(error);
         res.status(400).json({
-            message: "Faild to fetch hairdressers appointments",
+            message: "Faild to get hairdressers appointments",
             error: error.message
         })
     }
 }
+
+export const getAppointments = async (req, res) => {
+    try {
+        const { type } = req.query; //  'today', 'upcoming' or 'past'
+        let dateFilter = {};
+        const now = new Date();
+
+        if (type === 'today') {
+            const start = new Date(); start.setHours(0,0,0,0);
+            const end = new Date(); end.setHours(23,59,59,999);
+            dateFilter = { gte: start, lte: end };
+        } else if (type === 'upcoming') {
+            dateFilter = { gt: now };
+        } else if (type === 'past') {
+            dateFilter = { lt: now };
+        }
+
+        const appointments = await Prisma.appointment.findMany({
+            where: {
+                startDate: dateFilter
+            },
+            include: { service: true, client: true, hairdresser: true},
+            orderBy: { startDate: type === 'past' ? 'desc' : 'asc' }
+        });
+
+        res.status(200).json({
+            message: "Appointments",
+            appointments
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({
+            message: "Faild to get appointments",
+            error: error.message
+        })  
+    }
+    
+};
 
 export const getClientAppointments = async (req, res) => {
     try {
