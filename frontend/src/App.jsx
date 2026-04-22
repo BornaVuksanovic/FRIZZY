@@ -11,6 +11,8 @@ import AdminPanel from './pages/admin/adminPanel.jsx';
 import CreateHairdresser from './pages/admin/createHairdresser.jsx';
 import CreateService from './pages/admin/createService.jsx';
 import HairdresserSchedule from './pages/hairdresser/hairdresserSchedule.jsx';
+import FutureAppointments from './pages/admin/futureApps.jsx';
+import PastAppointments from './pages/admin/pastApps.jsx';
 import { useAuthStore } from './store.js';
 import { Toaster } from "react-hot-toast";
 import { ClipLoader } from 'react-spinners';
@@ -51,6 +53,8 @@ export default function App() {
         <nav>
           <Link to="/createService">Kreiraj uslugu</Link>    
           <Link to="/createHairdresser">Kreiraj Račun Radniku</Link>
+          <Link to="/futureAppointments">Nadolazeći termini</Link>
+          <Link to="/pastAppointments">Prošli termini</Link>
           <Link to="/adminPanel">Nadzorna Ploča</Link>     
         </nav>           
         )
@@ -80,6 +84,8 @@ export default function App() {
         <Route path='/adminPanel' element={token && user.role == "ADMIN" ? <AdminPanel /> : <Navigate to="/login" />} />
         <Route path='/createHairdresser' element={token && user.role == "ADMIN" ? <CreateHairdresser /> : <Navigate to="/login" />} /> 
         <Route path='/createService' element={token && user.role == "ADMIN" ? <CreateService /> : <Navigate to="/login" />} /> 
+        <Route path='/futureAppointments' element={token && user.role == "ADMIN" ? <FutureAppointments /> : <Navigate to="/login" />} /> 
+        <Route path='/pastAppointments' element={token && user.role == "ADMIN" ? <PastAppointments /> : <Navigate to="/login" />} />         
                 
       </Routes>
     </BrowserRouter>
