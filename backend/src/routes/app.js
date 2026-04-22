@@ -108,6 +108,7 @@ export const getHairdresserAppointments = async (req, res) => {
                 startDate: dateFilter
             },
             select: {
+                id: true,
                 startDate:true,
                 service:{
                     select: { duration: true, name: true, price: true}
@@ -152,7 +153,7 @@ export const getAppointments = async (req, res) => {
             where: {
                 startDate: dateFilter
             },
-            include: { service: true, client: true, hairdresser: true},
+            include: { id:true, service: true, client: true, hairdresser: true},
             orderBy: { startDate: type === 'past' ? 'desc' : 'asc' }
         });
 
@@ -183,6 +184,7 @@ export const getClientAppointments = async (req, res) => {
                 clientId: parseInt(clientId),
             },
             select: {
+                id: true,
                 startDate:true,
                 service: true
             }
@@ -245,17 +247,17 @@ export const getServices = async (req,res) => {
 
 export const deleteAppointment = async (req,res) => {
     try {
-        const appointmentId = req.params.id;
+        const { id } = req.query;
 
-        const deleted = await Prisma.appointment.delete({
+        const deletedApp = await Prisma.appointment.delete({
             where: {
-                id: parseInt(appointmentId)
+                id: parseInt(id)
             }
         });
 
         res.status(200).json({
             message: "Appointment deleted",
-            deleted
+            deletedApp
         })
     } catch (error) {
         res.status(400).json({

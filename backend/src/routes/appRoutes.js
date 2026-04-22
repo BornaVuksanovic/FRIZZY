@@ -9,6 +9,7 @@ import { createAppointment } from "./app.js";
 import { getHairdresserAppointments } from "./app.js";
 import { getClientAppointments } from "./app.js";
 import { getAppointments } from "./app.js";
+import { deleteAppointment } from "./app.js";
 
 const appRouter = express.Router();
 
@@ -21,5 +22,6 @@ appRouter.route('/createAppointment').post(protectRoute,createAppointment);
 appRouter.route('/getHairdresserAppointments').get(protectRoute,getHairdresserAppointments);
 appRouter.route('/getClientAppointments').get(protectRoute,getClientAppointments);
 appRouter.route('/getAppointments').get(protectRoute,getAppointments);
+appRouter.route('/deleteAppointment').delete(protectRoute,deleteAppointment);
 
 export default appRouter;

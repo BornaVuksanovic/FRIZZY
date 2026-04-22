@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function ClientProfile() {
     const { token, user, logout } = useAuthStore();
-
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     
@@ -33,9 +34,37 @@ export default function ClientProfile() {
       console.error("Appointment fetch failed", error.message);
       toast.error('Neuspješno dohvacanje appointmenta');
     },
-    enabled:() => {!!user?.id} 
+    enabled:() => !!user?.id
     
   });
+
+  const handleDelete = async(id) => {
+
+    const potvrda = window.confirm("Jesi li siguran da želiš otkazati ovaj termin?");
+
+    if (!potvrda) return;
+   
+    try {     
+        const response = await axios.delete("http://localhost:1000/api/app/deleteAppointment", 
+          {
+            params: {
+                id: id
+            },
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+            toast.success('Uspješno obrisan termin');
+
+            // Osvježi listu termina da obrisani odmah nestane
+            queryClient.invalidateQueries(['appointments']);
+        } catch (error) {
+            console.log("Delete appointment failed", error.message);
+            toast.error('Neuspješno obrisan  termin');
+        }
+
+  }
 
   const appointments = appointmentsQuery.data;
  
@@ -43,9 +72,8 @@ export default function ClientProfile() {
   const futureApp = appointments?.filter(app => new Date(app.startDate) >= now );
   const pastApp = appointments?.filter(app=> new Date(app.startDate) < now );
 
-  const isLoading = !user || appointmentsQuery.isLoading;
 
-    if (isLoading) {
+    if (isLoading || !user || appointmentsQuery.isLoading) {
         return (
             <div>
                 <ClipLoader loading={isLoading} size={50} color={"#3498db"} />
@@ -65,8 +93,12 @@ export default function ClientProfile() {
                 <h2>Rezervirani termini</h2>
                 {futureApp?.length > 0 ? (
                     futureApp.map(app => (
-                        <p key={app.id}>{app.service.name} - {new Date(app.startDate).toLocaleString('hr-HR')}</p>
+                        <div key={app.id}>
 
+                            <p>{app.service.name} - {new Date(app.startDate).toLocaleString('hr-HR')}</p>
+                            <button onClick={() => handleDelete(app.id)}>Otkaži</button>
+                        </div>
+                 
                     ))
                 ) :
                 (
