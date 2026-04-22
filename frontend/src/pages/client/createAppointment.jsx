@@ -82,16 +82,20 @@ export default function CreateAppointment() {
   }
 
   const isSlotBusy = (slotTime) => { //slot time npr. 10:30
-    if (!appointments) return false;
+
     const [hours, minutes] = slotTime.split(":").map(Number); // button vrijednost pretvaramu Date
     const slotDate = new Date(startDate);
     slotDate.setHours(hours,minutes,0,0);
 
+    const currentSlotTime = slotDate.getTime();
+    const now = new Date();
+    if(now.getTime() > currentSlotTime) return true;
+
+    if( !appointments ) return false;
+
     return (appointments || []).some(app => {
       const start = new Date(app.startDate).getTime();
       const end = start + (app.service.duration * 60000);
-
-      const currentSlotTime = slotDate.getTime();
 
       return currentSlotTime >= start && currentSlotTime < end;
     })
