@@ -112,7 +112,8 @@ export const getHairdresserAppointments = async (req, res) => {
                 client: {
                     select: { firstName: true, lastName: true, phoneNumber: true}
                 }
-            }
+            },
+            orderBy: { startDate: 'asc' }
         });
         res.status(200).json({
             message: "Hairdressers appointments",

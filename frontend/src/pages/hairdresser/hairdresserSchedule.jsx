@@ -13,10 +13,9 @@ export default function HairdresserSchedule() {
   const appointmentsQuery = useQuery({
     queryKey: ['appointments'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getHairdresserAppointments",{
+      const response = await axios.get("http://localhost:1000/api/app/getAppointments",{
           params: {
-            hairdresserId: user.id,
-            date: today.toISOString()
+            type: 'upcoming' 
           },
           
           headers: {
@@ -40,6 +39,18 @@ export default function HairdresserSchedule() {
 
   const appointments = appointmentsQuery.data;
 
+  const groupedAppointments = appointments?.reduce((acc, app) => {
+    const dateKey = new Date(app.startDate).toLocaleDateString('hr-HR');
+
+    if( !acc[dateKey]) {
+      acc[dateKey]= [];
+    }
+
+    acc[dateKey].push(app);
+
+    return acc;
+  },{}); // {} početna vrijednost
+
   const isLoading = appointmentsQuery.isLoading || !user;
 
     if (isLoading) {
@@ -52,25 +63,31 @@ export default function HairdresserSchedule() {
 
   return (
     <div>
-      <h1>Današnji termini</h1>
+      <h1>Budući termini</h1>
         <h2>{user.username}</h2>
         <div>
-          { appointments?.length > 0 ? (
-             appointments.map(app=> (
-             <div>
-                <p key={app.id}>{app.service.name} - {new Date(app.startDate).toLocaleTimeString('hr-HR', { hour: '2-digit',minute: '2-digit'})}</p>
-                <p key={app.id}>Client: {app.client.firstName} {app.client.lastName} - tel:{app.client.phoneNumber} </p>
-             </div>
-            ) )
-          )
-          :
-          (<p>Nema rezervacija za danas</p>)
-          }
+          {appointments?.length > 0 ? (
+            Object.entries(groupedAppointments).map(([date, apps]) =>(
+              <div key={date}>
+                <h3>{date}</h3>
+                {apps.map(app => (
+                  <div key={app.id}>
+                    <p>
+                      <strong>
+                        {app.service.name} {new Date(app.startDate).toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})}
+                      </strong>
+                    </p>
+                    <p>
+                      Client: {app.client.firstName} {app.client.lastName} - tel: {app.client.phoneNumber}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <p>Nema budućih termina</p>
+          )}
         </div>
-
-
-
-
     </div>
   )
 }

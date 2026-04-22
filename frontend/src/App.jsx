@@ -10,6 +10,7 @@ import HairdresserDashboard from './pages/hairdresser/hairdresserDashboard.jsx';
 import AdminPanel from './pages/admin/adminPanel.jsx';
 import CreateHairdresser from './pages/admin/createHairdresser.jsx';
 import CreateService from './pages/admin/createService.jsx';
+import HairdresserSchedule from './pages/hairdresser/hairdresserSchedule.jsx';
 import { useAuthStore } from './store.js';
 import { Toaster } from "react-hot-toast";
 import { ClipLoader } from 'react-spinners';
@@ -40,8 +41,9 @@ export default function App() {
         : token && user.role == "HAIRDRESSER" ? 
         (
         <nav>
+          <Link to="/hairdresserSchedule">Raspored</Link> 
           <Link to="/hairdresserDashboard">Nadzorna Ploča</Link>    
-          <Link to="/hairdresserProfile">Profil</Link>  
+          <Link to="/hairdresserProfile">Profil</Link>   
         </nav>       
         )
         : token && user.role == "ADMIN" ?
@@ -73,6 +75,7 @@ export default function App() {
 
         <Route path="/hairdresserProfile" element={token && user.role == "HAIRDRESSER" ? <HairdresserProfile /> : <Navigate to="/login" />} />
         <Route path='/hairdresserDashboard' element={token && user.role == "HAIRDRESSER" ? <HairdresserDashboard /> : <Navigate to="/login" />} />
+        <Route path='/hairdresserSchedule' element={token && user.role == "HAIRDRESSER" ? <HairdresserSchedule /> : <Navigate to="/login" />} />
 
         <Route path='/adminPanel' element={token && user.role == "ADMIN" ? <AdminPanel /> : <Navigate to="/login" />} />
         <Route path='/createHairdresser' element={token && user.role == "ADMIN" ? <CreateHairdresser /> : <Navigate to="/login" />} /> 
