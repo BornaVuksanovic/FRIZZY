@@ -13,8 +13,10 @@ export default function HairdresserSchedule() {
   const appointmentsQuery = useQuery({
     queryKey: ['appointments'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getAppointments",{
+      const response = await axios.get("http://localhost:1000/api/app/getHairdresserAppointments",{
           params: {
+            hairdresserId: user.id,
+            date: today,
             type: 'upcoming' 
           },
           

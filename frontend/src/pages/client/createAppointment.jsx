@@ -106,7 +106,8 @@ export default function CreateAppointment() {
       const response = await axios.get("http://localhost:1000/api/app/getHairdresserAppointments", {
           params: {
             hairdresserId: parseInt(hairdresser),
-            date: startDate.toISOString()
+            date: startDate.toISOString(),
+            type: 'today'
           },
           
           headers: {

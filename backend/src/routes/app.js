@@ -83,38 +83,42 @@ export const createAppointment = async (req,res) => {
 
 export const getHairdresserAppointments = async (req, res) => {
     try {
-        const { hairdresserId, date} = req.query;
-
+        const { hairdresserId, date, type} = req.query; // type: today,upcoming, past
 
         if (!hairdresserId) {
             return res.status(400).json({ message: "Nema ID-a frizera" });
         }
 
-        const startOfDay = new Date(date);
-        startOfDay.setHours(0,0,0,0);
+        let dateFilter = {};
+        const now = new Date();
 
-        const endOfDay = new Date(date);
-        endOfDay.setHours(23,59,59,999);
+        if (type === 'today') {
+            const start = new Date(date); start.setHours(0,0,0,0);
+            const end = new Date(date); end.setHours(23,59,59,999);
+            dateFilter = { gte: start, lte: end };
+        } else if (type === 'upcoming') {
+            dateFilter = { gt: now };
+        } else if (type === 'past') {
+            dateFilter = { lt: now };
+        }
 
         const appointments = await Prisma.appointment.findMany({
             where: {
                 hairdresserId: parseInt(hairdresserId),
-                startDate: {
-                    gte: startOfDay,
-                    lte: endOfDay
-                }
+                startDate: dateFilter
             },
             select: {
                 startDate:true,
                 service:{
-                    select: { duration: true, name: true }
+                    select: { duration: true, name: true, price: true}
                 },
                 client: {
                     select: { firstName: true, lastName: true, phoneNumber: true}
                 }
             },
-            orderBy: { startDate: 'asc' }
+            orderBy: { startDate: type === 'past' ? 'desc' : 'asc' }
         });
+
         res.status(200).json({
             message: "Hairdressers appointments",
             appointments

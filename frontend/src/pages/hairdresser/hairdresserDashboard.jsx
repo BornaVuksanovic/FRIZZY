@@ -16,7 +16,8 @@ export default function HairdresserDashboard() {
       const response = await axios.get("http://localhost:1000/api/app/getHairdresserAppointments",{
           params: {
             hairdresserId: user.id,
-            date: today.toISOString()
+            date: today.toISOString(),
+            type: 'today'
           },
           
           headers: {
@@ -53,13 +54,13 @@ export default function HairdresserDashboard() {
   return (
     <div>
       <h1>Današnji termini</h1>
-        <h2>{user.username}</h2>
+        <h2>{today.toLocaleDateString('hr-HR')}</h2>
         <div>
           { appointments?.length > 0 ? (
              appointments.map(app=> (
-             <div>
-                <p key={app.id}>{app.service.name} - {new Date(app.startDate).toLocaleTimeString('hr-HR', { hour: '2-digit',minute: '2-digit'})}</p>
-                <p key={app.id}>Client: {app.client.firstName} {app.client.lastName} - tel:{app.client.phoneNumber} </p>
+             <div key={app.id}>
+                <p>{app.service.name} - {new Date(app.startDate).toLocaleTimeString('hr-HR', { hour: '2-digit',minute: '2-digit'})}</p>
+                <p>Client: {app.client.firstName} {app.client.lastName} - tel:{app.client.phoneNumber} </p>
              </div>
             ) )
           )
