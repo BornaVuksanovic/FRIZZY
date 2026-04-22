@@ -243,6 +243,28 @@ export const getServices = async (req,res) => {
     }
 }
 
+export const deleteAppointment = async (req,res) => {
+    try {
+        const appointmentId = req.params.id;
+
+        const deleted = await Prisma.appointment.delete({
+            where: {
+                id: parseInt(appointmentId)
+            }
+        });
+
+        res.status(200).json({
+            message: "Appointment deleted",
+            deleted
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: "Faild to deleat Appointment",
+            error: error.message
+        })       
+    }
+}
+
 export const testToken = async (req,res) => {
     try {  
         const user = req.user
