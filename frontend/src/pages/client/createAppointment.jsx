@@ -18,7 +18,7 @@ export default function CreateAppointment() {
   const navigae = useNavigate();
   const queryClient = useQueryClient();
 
-  const slots = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"];
+  const slots = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00","15:30", "16:00"];
 
   const servicesQuery = useQuery({
     queryKey: ['services'],
@@ -181,7 +181,6 @@ export default function CreateAppointment() {
         {step == 2 && (
           <div>
             <button type="button" onClick={() => setStep(1)}>Natrag</button>
-            <label>Odaberi slobodan termin:</label>
             <DatePicker 
               selected={startDate}
               onChange={(date) => setStartDate(date)}
@@ -196,7 +195,9 @@ export default function CreateAppointment() {
               inline // kalendar uvijek vidljiv
             />
             
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+        <div className="p-6 bg-white rounded-3xl shadow-xl border border-gray-100 max-w-md mx-auto">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">Odaberi termin</h3>
+          <div className="grid grid-cols-3 gap-3">
           {slots.map(slot => {
             const busy = isSlotBusy(slot);
             return (
@@ -204,6 +205,13 @@ export default function CreateAppointment() {
                 key={slot}
                 type="button"
                 disabled={busy} // ako je zauzet, ne moze se kliknut
+                className={`
+                  py-3 px-4 rounded-2xl text-sm transition-all duration-200
+                  ${busy 
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed border-transparent" 
+                    : "bg-indigo-100 text-indigo-700 border-2 border-indigo-100 hover:border-indigo-600 hover:bg-indigo-400 hover:text-white shadow-sm active:scale-95"
+                   }
+                `}
                 onClick={() => {
                   const [h, m] = slot.split(":").map(Number);
                   const noviDatum = new Date(startDate);
@@ -215,8 +223,8 @@ export default function CreateAppointment() {
               </button>
             )
           }
-
           )}
+           </div>
           </div>
 
             <button type="submit" onClick={handleCreation} disabled={isPending}>{isPending? "Kreiranje..." : "Rezerviraj"}</button>
