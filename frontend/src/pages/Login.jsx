@@ -12,10 +12,10 @@ export default function Login() {
     useEffect(()=>{
         if (!user) return;
         if( user.role == "CLIENT"){
-            navigate("/clientProfile");
+            navigate("/createAppointment");
         }    
         else if(user.role == "HAIRDRESSER"){
-            navigate("/hairdresserProfile");
+            navigate("/hairdresserDashboard");
         }
         else if(user.role == "ADMIN"){
             navigate("/adminPanel");
@@ -58,6 +58,10 @@ export default function Login() {
                 </div>
                 <button type="submit" onClick={handleLogin} >Prijavi se</button>
             </form>
+            <div>
+                <p>Nemaš račun? Registriraj se.</p>
+                <button onClick={() => navigate("/register")}>Registracija</button>
+            </div>
         </div>
     )
 }

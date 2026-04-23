@@ -21,7 +21,7 @@ export default function Register() {
            console.log("error handleRegister"); 
         } 
         else{
-            navigate("/clientProfile")
+            navigate("/createAppointment")
             console.log("uspjesan registriran");
         } 
     }

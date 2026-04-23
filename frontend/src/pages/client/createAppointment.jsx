@@ -18,6 +18,8 @@ export default function CreateAppointment() {
   const navigae = useNavigate();
   const queryClient = useQueryClient();
 
+  const slots = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"];
+
   const servicesQuery = useQuery({
     queryKey: ['services'],
     queryFn: async () => {
@@ -195,7 +197,7 @@ export default function CreateAppointment() {
             />
             
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-          {["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"].map(slot => {
+          {slots.map(slot => {
             const busy = isSlotBusy(slot);
             return (
               <button 
