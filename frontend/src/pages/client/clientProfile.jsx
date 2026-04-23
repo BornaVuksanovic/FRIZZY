@@ -81,48 +81,91 @@ export default function ClientProfile() {
         );
     }
 
-    return (
-        <div>
-            <div>
-                <h1>Profil {user.username}</h1>
-                <p>Ime: {user.firstName}</p>
-                <p>Prezime: {user.lastName}</p>
-                <p>Broj telefona: {user.phoneNumber}</p>
+return (
+  <div className="min-h-screen bg-slate-50 py-10 px-4">
+    <div className="max-w-2xl mx-auto space-y-8">
+      
+      {/* KARTICA PROFILA */}
+      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 relative overflow-hidden">
+        
+        <div className="relative z-10 flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+          <div>
+            <h1 className="text-3xl font-bold text-indigo-600 uppercase tracking-widest mb-1">Profil</h1>
+            <h2 className="text-3xl font-black text-slate-900 leading-tight">
+              {user.firstName} {user.lastName}
+            </h2>
+            <div className="mt-4 flex items-center gap-2 text-slate-500 font-medium">
+              <span className="text-xs bg-slate-100 px-2 py-1 rounded-md uppercase text-slate-400">Tel</span>
+              {user.phoneNumber}
             </div>
-            <div>
-                <h2>Rezervirani termini</h2>
-                {futureApp?.length > 0 ? (
-                    futureApp.map(app => (
-                        <div key={app.id}>
-
-                            <p>{app.service.name} - {new Date(app.startDate).toLocaleString('hr-HR')}</p>
-                            <button onClick={() => handleDelete(app.id)}>Otkaži</button>
-                        </div>
-                 
-                    ))
-                ) :
-                (
-                    <p>Nema rezerviranih termina</p>
-                )}
-            </div>
-            <div>
-                <h2>Prošli termini</h2>
-                {pastApp?.length > 0 ? 
-                    ( pastApp.map(app => ( <p key={app.id}>{app.service.name} - {new Date(app.startDate).toLocaleString('hr-HR')}</p>)))
-                    :
-                    (
-                        <p>Nema prošlih termina</p>
-                    )
-                }
-            </div>
-            <div>
-                <button onClick={logout}>
-                    <p>odjava</p>
-                </button>
-            </div>
-            
+          </div>
+          
+          <button 
+            onClick={logout}
+            className="px-6 py-3 bg-red-50 text-red-600 font-bold rounded-2xl hover:bg-red-100 transition-all active:scale-95 text-sm"
+          >
+            Odjavi se
+          </button>
         </div>
+      </div>
 
-    )
+      {/* AKTIVNI TERMINI */}
+      <section>
+        <h2 className="text-2xl font-black text-slate-800 mb-4 px-2 flex items-center gap-2">
+          Rezervirani termini
+        </h2>
+        
+        <div className="space-y-4">
+          {futureApp?.length > 0 ? (
+            futureApp.map(app => (
+              <div key={app.id} className="bg-white p-5 rounded-2xl border border-indigo-100 shadow-sm flex justify-between items-center ">
+                <div>
+                  <p className="font-black text-slate-800 text-lg">{app.service.name}</p>
+                  <p className="text-lg text-indigo-600 font-semibold">
+                    {new Date(app.startDate).toLocaleString('hr-HR', { 
+                      day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
+                    })}h
+                  </p>
+                </div>
+                <button 
+                  onClick={() => handleDelete(app.id)}
+                  className="px-4 py-2 text-xs font-bold text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all  tracking-wider"
+                >
+                  Otkaži
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="bg-slate-100/50 border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center text-slate-400 italic">
+              Trenutno nemaš zakazanih termina.
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* PROŠLI TERMINI */}
+      <section>
+        <h2 className="text-xl font-black text-slate-800 mb-4 px-2">Povijest posjeta</h2>
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden text-sm">
+          {pastApp?.length > 0 ? (
+            <div className="divide-y divide-slate-50">
+              {pastApp.map(app => (
+                <div key={app.id} className="p-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                  <span className="font-bold text-slate-700">{app.service.name}</span>
+                  <span className="text-slate-400 ">
+                    {new Date(app.startDate).toLocaleDateString('hr-HR')}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="p-8 text-center text-slate-400">Nema prošlih termina.</p>
+          )}
+        </div>
+      </section>
+
+    </div>
+  </div>
+);
 }
 
