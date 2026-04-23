@@ -44,42 +44,64 @@ export default function CreateService() {
     }
 
     return (
-        <div>
-            <h1>Kreiraj uslugu</h1>
-            <form>
-                <div>
-                    <p>Naziv</p>
-                    <input 
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        placeholder="Unesi naziv usluge"
-                    />
-                </div>
-                <div>
-                    <p>Cijena</p>
-                    <input 
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        placeholder="Unesi cijenu"
-                        type="float"
-                    />
-                </div>
-                <div>
-                <label>Vremensko trajanje</label>
-                <select 
-                    value={duration} 
-                    onChange={(e) => setDuration(e.target.value)}
-                >
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                    <option value="60">60</option>
-                    <option value="90">90</option>             
-                </select>
-                </div>
+        <div className="min-h-screen bg-slate-50 py-12 px-4">
 
-                <button type="submit" onClick={handleCreation} >Kreiraj uslugu</button>
-            </form>
-        </div>
+            <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                <div className="bg-indigo-600 p-5 text-white text-center">
+                  <h2 className="text-2xl font-bold">Kreiraj uslugu</h2>  
+                </div>
+                
+                <div className="p-8">
+                    <form className="space-y-5">
+                        <div>
+                            <label className="block text-m font-semibold text-slate-700 mb-2">Naziv</label>
+                            <input 
+                                value={name}
+                                onChange={(event) => setName(event.target.value)}
+                                placeholder="Unesi naziv usluge"
+                                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900  cursor-pointer"
+
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-m font-semibold text-slate-700 mb-2">Cijena (€)</label>
+                            <input 
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                placeholder="Unesi cijenu"
+                                type="float"
+                                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900  cursor-pointer"
+
+                            />
+                        </div>
+                        <div>
+                        <label className="block text-m font-semibold text-slate-700 mb-2">Vremensko trajanje (minute)</label>
+                        <select 
+                            value={duration} 
+                            onChange={(e) => setDuration(e.target.value)}
+                             className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900  cursor-pointer"
+                        >
+                            <option value="">Odaberi vrijeme</option>
+                            <option value="30">30 min</option>
+                            <option value="45">45 min</option>
+                            <option value="60">60 min</option>
+                            <option value="90">90 min</option>             
+                        </select>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            onClick={handleCreation} 
+                            disabled={!name || !price || !duration}
+                            className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold  hover:bg-indigo-900 disabled:bg-slate-200 disabled:text-slate-400"
+                        >
+                            Kreiraj uslugu
+                        </button>
+                    </form>
+                </div>
+               
+            </div>
+        </ div>
     )
 }
 
