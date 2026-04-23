@@ -153,7 +153,7 @@ export const getAppointments = async (req, res) => {
             where: {
                 startDate: dateFilter
             },
-            include: { id:true, service: true, client: true, hairdresser: true},
+            include: { service: true, client: true, hairdresser: true},
             orderBy: { startDate: type === 'past' ? 'desc' : 'asc' }
         });
 

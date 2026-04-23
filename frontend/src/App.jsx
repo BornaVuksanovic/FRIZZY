@@ -17,6 +17,7 @@ import TodayAppointments from './pages/admin/todayApps.jsx';
 import { useAuthStore } from './store.js';
 import { Toaster } from "react-hot-toast";
 import { ClipLoader } from 'react-spinners';
+import Navbar from './Navbar.jsx';
 
 
 export default function App() {
@@ -35,42 +36,7 @@ export default function App() {
   return (
     <>
     <BrowserRouter>
-      {token && user.role == "CLIENT" ? (
-        <nav>
-          <Link to="/createAppointment">Rezervacija</Link>    
-          <Link to="/clientProfile">Profil</Link>  
-        </nav>
-        )
-        : token && user.role == "HAIRDRESSER" ? 
-        (
-        <nav>
-          <Link to="/hairdresserSchedule">Raspored</Link> 
-          <Link to="/hairdresserDashboard">Nadzorna Ploča</Link>    
-          <Link to="/hairdresserProfile">Profil</Link>   
-        </nav>       
-        )
-        : token && user.role == "ADMIN" ?
-        (
-        <nav>
-          <Link to="/createService">Kreiraj uslugu</Link>    
-          <Link to="/createHairdresser">Kreiraj Račun Radniku</Link>
-          <Link to="/futureAppointments">Nadolazeći termini</Link>
-          <Link to="/pastAppointments">Prošli termini</Link>
-          <Link to="/todayAppointments">Današnji termini</Link>
-          <Link to="/adminPanel">Nadzorna Ploča</Link>     
-        </nav>           
-        )
-        :
-        (
-        <nav>
-          <Link to="/">Početna</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>      
-        </nav>          
-        )
-      }
-
-
+      <Navbar user={user} token={token}/>
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
