@@ -68,24 +68,64 @@ export default function AdminPanel() {
 
 
   return (
-    <div>
-        <div>
-        <h1>ADMIN</h1>
-            <h2>Panel</h2>
-            <h3>Zaposlenici:</h3>
+    <div className="min-h-screen bg-slate-50 py-10 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
             <div>
-                {hairdressers?.map(h => <p key={h.id}>{h.firstName} {h.lastName}</p>)} 
+              <h1 className="text-3xl font-bold text-indigo-600  ">Kontrolna Ploča</h1>
             </div>
-            <h3>Usluge:</h3>
-            <div>
-                {services?.map(s => <p key={s.id}>{s.name} - {s.duration}min {s.price}€</p>)}
-            </div>
-        </div>
-        <div>
-            <button onClick={logout}>
-                <p>odjava</p>
+            <button 
+              onClick={logout}
+              className="mt-4 md:mt-0 flex items-center gap-2 px-6 py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-200 transition-colors active:scale-95"
+            >
+              Odjava
             </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+              <section className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div className="flex items-center gap-3 mb-6">
+                  <h3 className="text-xl font-bold text-slate-800">Zaposlenici</h3>
+                </div>
+                
+                <div className="space-y-3">
+                  {hairdressers?.map(h => (
+                    <div key={h.id} className="flex items-center p-4 bg-slate-50 rounded-2xl border border-transparent">
+                      <div className="w-10 h-10 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-700 font-bold mr-4">
+                        {h.firstName[0]}{h.lastName[0]}
+                      </div>
+                      <p className="font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">
+                        {h.firstName} {h.lastName}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div className="flex items-center gap-3 mb-6">
+                  <h3 className="text-xl font-bold text-slate-800">Usluge</h3>
+                </div>
+
+                <div className="space-y-3">
+                  {services?.map(s => (
+                    <div key={s.id} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-transparent">
+                      <div>
+                        <p className="font-bold text-slate-800">{s.name}</p>
+                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{s.duration} min</p>
+                      </div>
+                      <div className="text-lg font-black text-emerald-600">
+                        {s.price}€
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+            </div>
         </div>
+
     </div>
 
   )
