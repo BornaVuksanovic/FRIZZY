@@ -60,37 +60,79 @@ export default function FutureAppointments() {
       );
     }
 
-  return (
-    <div>
-      <h1>Budući termini</h1>
-        <div>
-          {appointments?.length > 0 ? (
-            Object.entries(groupedAppointments).map(([date, apps]) =>(
-              <div key={date}>
-                <h3>{date}</h3>
+return (
+  <div className="min-h-screen bg-slate-50 py-10 px-4">
+    <div className="max-w-3xl mx-auto">
+      
+      
+      <div className="mb-10 text-center">
+        <h1 className="text-3xl font-black text-slate-900 ">
+          BUDUĆI TERMINI
+        </h1>
+      </div>
+
+      <div className="space-y-10">
+        {appointments?.length > 0 ? (
+          Object.entries(groupedAppointments).map(([date, apps]) => (
+            <div key={date} >
+              
+              {/*datum*/}
+              <div className=" top-20 z-10 mb-4">
+                <h3 className="inline-block bg-indigo-600 text-white px-4 py-1 rounded-lg text-sm font-bold shadow-md">
+                  {date}
+                </h3>
+              </div>
+
+              {/* Lista termina za taj datum */}
+              <div className="grid gap-4 ml-2  border-indigo-100 pl-6 py-2">
                 {apps.map(app => (
-                  <div key={app.id}>
-                    <p>
-                      <strong>
-                        {app.service.name} {new Date(app.startDate).toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})}
-                      </strong>
-                    </p>
-                    <p>
-                        Frizer: {app.hairdresser.firstName} {app.hairdresser.lastName}
-                    </p>
-                    <p>
-                      Klijent: {app.client.firstName} {app.client.lastName} - tel: {app.client.phoneNumber}
-                    </p>
+                  <div 
+                    key={app.id} 
+                    className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100  relative overflow-hidden"
+                  >
+
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-xl font-black text-slate-800">
+                            {new Date(app.startDate).toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})}h
+                          </span>
+                          <span className="bg-indigo-50 text-indigo-700 text-s font-bold px-2 py-1 rounded uppercase tracking-wider">
+                            {app.service.name}
+                          </span>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <p className="text-sm text-slate-700 ">
+                            <span className=" font-bold">Frizer:</span> {app.hairdresser.firstName} {app.hairdresser.lastName}
+                          </p>
+                          <p className="text-sm text-slate-700">
+                            <span className="font-bold">Klijent:</span> {app.client.firstName} {app.client.lastName}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-left md:text-right pt-3 md:pt-0 border-t md:border-t-0 border-slate-50">
+                        <p className="text-xs text-slate-700 uppercase font-bold tracking-widest mb-1">Kontakt telefon</p>
+                        <p className="text-slate-800 font-mono ">
+                          {app.client.phoneNumber}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
-            ))
-          ) : (
-            <p>Nema budućih termina</p>
-          )}
-        </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white rounded-3xl p-20 text-center border-2 border-dashed border-slate-200">
+            <p className="text-slate-400 text-lg font-medium italic">Trenutno nema zakazanih budućih termina</p>
+          </div>
+        )}
+      </div>
     </div>
-  )
+  </div>
+);
 }
 
 
