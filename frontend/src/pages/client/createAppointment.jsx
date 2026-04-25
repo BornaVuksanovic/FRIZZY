@@ -16,6 +16,7 @@ export default function CreateAppointment() {
   const [hairdresser, setHairdresser] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [step, setStep] = useState(1); 
+  const [clickedSlot, setClickedSlot] = useState(null);
   const navigae = useNavigate();
   const queryClient = useQueryClient();
 
@@ -227,6 +228,7 @@ export default function CreateAppointment() {
                   <div className="grid grid-cols-3 gap-3">
                   {slots.map(slot => {
                   const busy = isSlotBusy(slot);
+                  const clicked = clickedSlot === slot;
                   return (
                     <button 
                       key={slot}
@@ -236,7 +238,9 @@ export default function CreateAppointment() {
                         py-3 px-4 rounded-2xl text-sm transition-all duration-200
                         ${busy 
                           ? "bg-gray-100 text-gray-400 cursor-not-allowed border-transparent" 
-                          : "bg-indigo-100 text-indigo-700 border-2 border-indigo-100 hover:border-indigo-600 hover:bg-indigo-400 hover:text-white shadow-sm active:scale-95"
+                          : clicked
+                            ? "bg-green-500 border-green-600 text-white shadow-inner scale-95"
+                            : "bg-indigo-100 text-indigo-700 border-2 border-indigo-100 hover:border-indigo-600 hover:bg-indigo-400 hover:text-white shadow-sm active:scale-95"
                         }
                       `}
                       onClick={() => {
@@ -244,6 +248,7 @@ export default function CreateAppointment() {
                         const noviDatum = new Date(startDate);
                         noviDatum.setHours(h,m,0,0);
                         setStartDate(noviDatum);
+                        setClickedSlot(slot)
                       }}
                     >
                       {slot}
