@@ -27,7 +27,7 @@ export default function App() {
 
   useEffect(()=>{
     checkStore();
-  },[token, user])
+  },[])
 
   if( isLoading ){
     return <ClipLoader />
