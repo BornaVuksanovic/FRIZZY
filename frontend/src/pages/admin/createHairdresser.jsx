@@ -22,7 +22,7 @@ export default function CreateHairdresser() {
         setIsLoading(true)
         try {
             const formData = {username, password, firstName, lastName, phoneNumber, role};
-            const response = await axios.post("http://localhost:1000/api/app/registerHairdresser",
+            const response = await api.post("/api/app/registerHairdresser",
                 formData,
                 {
                     headers: {

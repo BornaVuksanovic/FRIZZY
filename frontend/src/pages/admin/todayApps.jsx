@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import api from "../../api.js";
 
 
 export default function TodayAppointments() {
@@ -13,7 +14,7 @@ export default function TodayAppointments() {
   const appointmentsQuery = useQuery({
     queryKey: ['appointments'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getAppointments",{
+      const response = await api.get("/api/app/getAppointments",{
           params: {
             type: 'today' 
           },

@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { ClipLoader } from "react-spinners"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import api from "../../api.js";
 
 export default function AdminPanel() {
     const { token, user, logout } = useAuthStore();
@@ -12,7 +13,7 @@ export default function AdminPanel() {
   const hairdressersQuery = useQuery({
     queryKey: ['hairdressers'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getHairdressers",{   
+      const response = await api.get("/api/app/getHairdressers",{   
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -34,7 +35,7 @@ export default function AdminPanel() {
   const servicesQuery = useQuery({
     queryKey: ['services'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getServices",{   
+      const response = await api.get("/api/app/getServices",{   
           headers: {
             Authorization: `Bearer ${token}`
           }

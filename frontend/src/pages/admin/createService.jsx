@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../../api.js";
 
 
 export default function CreateService() {
@@ -21,7 +22,7 @@ export default function CreateService() {
             const priceFloat = parseFloat(price);
             const durationInt = parseInt(duration);
             const formData = {name: name, price:priceFloat, duration: durationInt};
-            const response = await axios.post("http://localhost:1000/api/app/createService", 
+            const response = await api.post("/api/app/createService", 
                 formData,
                 {
                     headers:{
