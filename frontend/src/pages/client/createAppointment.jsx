@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import api from "../../api.js";
 
 
 export default function CreateAppointment() {
@@ -23,7 +24,7 @@ export default function CreateAppointment() {
   const servicesQuery = useQuery({
     queryKey: ['services'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getServices", {
+      const response = await api.get("/api/app/getServices", {
         headers:{
           Authorization: `Bearer ${token}`
         }
@@ -35,7 +36,7 @@ export default function CreateAppointment() {
   const hairdressersQuery = useQuery({
     queryKey: ['hairdressers'],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:1000/api/app/getHairdressers", {
+      const response = await api.get("/api/app/getHairdressers", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -46,7 +47,7 @@ export default function CreateAppointment() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData) => {
-        const response = await axios.post("http://localhost:1000/api/app/createAppointment", 
+        const response = await api.post("/api/app/createAppointment", 
           formData,
           {
             headers: {
@@ -109,7 +110,7 @@ export default function CreateAppointment() {
     queryFn: async() => {
       if( hairdresser == "") return [];
 
-      const response = await axios.get("http://localhost:1000/api/app/getHairdresserAppointments", {
+      const response = await api.get("/api/app/getHairdresserAppointments", {
           params: {
             hairdresserId: parseInt(hairdresser),
             date: startDate.toISOString(),

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
+import api from "./api";
 
 export const useAuthStore = create((set) => ({
     user: null,
@@ -10,7 +11,7 @@ export const useAuthStore = create((set) => ({
         set({ isLoading: true });
         try {
             const formData = {username, password, firstName, lastName, phoneNumber};
-            const response = await axios.post("http://localhost:1000/api/auth/register", formData);
+            const response = await api.post("/api/auth/register", formData);
 
             const data = response.data;
 
@@ -32,7 +33,7 @@ export const useAuthStore = create((set) => ({
         set({ isLoading: true });
         try {
             const formData = {username, password};
-            const response = await axios.post("http://localhost:1000/api/auth/login", formData);
+            const response = await api.post("/api/auth/login", formData);
 
             const data = response.data;
 
@@ -57,7 +58,7 @@ export const useAuthStore = create((set) => ({
 
             if (!token) return set({ user: null, isLoading: false }); 
 
-            const response = await axios.get("http://localhost:1000/api/app/testToken", {
+            const response = await api.get("/api/app/testToken", {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../../api.js";
 
 export default function ClientProfile() {
     const { token, user, logout } = useAuthStore();
@@ -17,7 +18,7 @@ export default function ClientProfile() {
     queryKey:['appointments'],
     queryFn: async() => {
     
-      const response = await axios.get("http://localhost:1000/api/app/getClientAppointments",{
+      const response = await api.get("/api/app/getClientAppointments",{
         params: {
             clientId: user.id
         },
@@ -45,7 +46,7 @@ export default function ClientProfile() {
     if (!potvrda) return;
    
     try {     
-        const response = await axios.delete("http://localhost:1000/api/app/deleteAppointment", 
+        const response = await api.delete("/api/app/deleteAppointment", 
           {
             params: {
                 id: id
