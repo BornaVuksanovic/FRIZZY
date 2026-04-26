@@ -5,7 +5,8 @@ import api from "./api";
 export const useAuthStore = create((set) => ({
     user: null,
     token: null,
-    isLoading: true,
+    isLoading: false,
+    isCheckingAuth: true,
 
     register: async (username, password, firstName, lastName, phoneNumber) => {
         set({ isLoading: true });
@@ -20,10 +21,10 @@ export const useAuthStore = create((set) => ({
 
             set({ user: data.user, token: data.token});
 
-            return { success: true };
+            return { success: true, message: response.data.message };
 
         } catch (error) {
-            return { success: false, error: error.message};
+            return { success: false, error: error.response?.data?.message};
         }finally{
             set({ isLoading: false });
         }
@@ -52,7 +53,7 @@ export const useAuthStore = create((set) => ({
     },
 
     checkStore: async () => {
-        set({ isLoading: true });
+        set({ isCheckingAuth: true });
         try {
             const token = localStorage.getItem('token');
 
@@ -69,7 +70,7 @@ export const useAuthStore = create((set) => ({
         } catch (error) {
             console.log("Check store failed", error);   
         }finally{
-            set({ isLoading: false });
+            set({ isCheckingAuth: false });
         }
     },
 

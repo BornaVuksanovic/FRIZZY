@@ -21,7 +21,7 @@ import Navbar from './Navbar.jsx';
 
 
 export default function App() {
-  const { token, user, checkStore, isLoading } = useAuthStore();
+  const { token, user, checkStore, isCheckingAuth } = useAuthStore();
 
 
 
@@ -29,7 +29,7 @@ export default function App() {
     checkStore();
   },[])
 
-  if( isLoading ){
+  if( isCheckingAuth ){
     return <ClipLoader />
   } 
 

@@ -13,9 +13,16 @@ const generateToken = (userId) => {
 export const register = async (req,res) => {
     try {
         const {username, password, firstName, lastName, phoneNumber} = req.body;
+        if( !username || !password || !firstName || !lastName || !phoneNumber){
+            return res.status(400).json({ message: "All fields are required"});
+        }
 
         if (password.length < 6){
             return res.status(400).json({ message: "Password less than 6 characters"});
+        }
+
+        if( username.length < 3){
+            return res.status(400).json({ message: "Username should be at least 3 characters long" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 5);

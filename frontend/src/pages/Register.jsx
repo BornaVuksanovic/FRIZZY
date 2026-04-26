@@ -9,29 +9,31 @@ export default function Register() {
     const[firstName, setFirstName] = useState("");
     const[lastName, setLastName] = useState("");
     const[phoneNumber, setPhoneNumber] = useState("");
+    const[ERROR, setERROR] = useState("");
     const { register, token, user } = useAuthStore();
     const navigate = useNavigate();
 
 
     const handleRegister = async (e) => {
-        e.preventDefault();
-        const result = await register(username, password, firstName, lastName, phoneNumber);
+        if (e) e.preventDefault(); 
+        setERROR("");
 
-        if( !result.success ){
-           console.log("error handleRegister"); 
-        } 
-        else{
-            navigate("/createAppointment")
-            console.log("uspjesan registriran");
-        } 
-    }
+        try {
+            const result = await register(username, password, firstName, lastName, phoneNumber);
 
-    useEffect(()=>{
-        if( user?.role == "CLIENT"){
-            navigate("/clientProfile");
-        }    
-    }, [user]);
+            if (result.success) {
+                navigate("/createAppointment");
+            } else {
+                console.log("4. Backend javio grešku:", result.error);
+                setERROR(result.error);
+            }
+        } catch (err) {
+            console.error("FATALNA GREŠKA U KOMPONENTI:", err);
+            setERROR("Došlo je do neočekivane greške u aplikaciji.");
+        }
+    };
 
+   
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -47,7 +49,7 @@ export default function Register() {
             </div>
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-10 shadow-xl rounded-3xl border border-slate-100">
-                    <form className="space-y-5">
+                    <form onSubmit={handleRegister} className="space-y-5">
                         <div>
                             <label className="block text-m font-semibold text-slate-700 mb-2">
                                 Korisničko ime
@@ -104,10 +106,17 @@ export default function Register() {
                             />
                         </div>
 
+
+                        {ERROR && (
+                            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-r-md animate-pulse">
+                                <p className="text-red-700 text-sm font-medium">{ERROR}</p>
+                            </div>
+                        )}
+                        
+
                         <div>
                             <button 
                                 type="submit" 
-                                onClick={handleRegister} 
                                 className="w-full flex justify-center py-3 px-4 rounded-xl bg-indigo-600 text-white font-bold  hover:bg-indigo-700 "
                             > 
                                 Registriraj se
