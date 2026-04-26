@@ -186,7 +186,8 @@ export const getClientAppointments = async (req, res) => {
             select: {
                 id: true,
                 startDate:true,
-                service: true
+                service: true,
+                hairdresser: true
             }
         });
         res.status(200).json({

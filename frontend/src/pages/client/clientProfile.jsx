@@ -122,6 +122,7 @@ return (
               <div key={app.id} className="bg-white p-5 rounded-2xl border border-indigo-100 shadow-sm flex justify-between items-center ">
                 <div>
                   <p className="font-black text-slate-800 text-lg">{app.service.name}</p>
+                  <p className="text-slate-800 text-m">Frizer: {app.hairdresser.firstName} {app.hairdresser.lastName}</p>
                   <p className="text-lg text-indigo-600 font-semibold">
                     {new Date(app.startDate).toLocaleString('hr-HR', { 
                       day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
