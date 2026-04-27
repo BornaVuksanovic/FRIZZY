@@ -24,11 +24,11 @@ export default function Register() {
             if (result.success) {
                 navigate("/createAppointment");
             } else {
-                console.log("4. Backend javio grešku:", result.error);
+                console.log("Backend javio grešku:", result.error);
                 setERROR(result.error);
             }
         } catch (err) {
-            console.error("FATALNA GREŠKA U KOMPONENTI:", err);
+            console.error("GREŠKA U KOMPONENTI:", err);
             setERROR("Došlo je do neočekivane greške u aplikaciji.");
         }
     };
