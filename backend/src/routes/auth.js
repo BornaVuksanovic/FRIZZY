@@ -25,6 +25,14 @@ export const register = async (req,res) => {
             return res.status(400).json({ message: "Username should be at least 3 characters long" });
         }
 
+        const isUsernameTaken = await prisma.user.findUnique({
+            where: { username: username }
+        });
+
+        if ( isUsernameTaken ){
+            return res.status(400).json({ message: "Username is already taken"});
+        }
+
         const hashedPassword = await bcrypt.hash(password, 5);
 
         const user = await prisma.user.create({data: { username, password: hashedPassword, firstName, lastName, phoneNumber}});
