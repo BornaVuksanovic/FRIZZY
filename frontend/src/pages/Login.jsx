@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
+    const[ERROR, setERROR] = useState("");
     const { login, token, user } = useAuthStore();
     const navigate = useNavigate();
   
@@ -23,15 +24,22 @@ export default function Login() {
     }, [user]);
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        const result = await login(username, password);
+        if (e) e.preventDefault();
+        setERROR("");
 
-        if( !result.success ){
-           console.log("error handleLogin",result); 
-        } 
-        else{            
-            console.log("uspjesan login");
-        } 
+        try {
+            const result = await login(username, password); 
+            if( !result.success ){
+                console.log("error handleLogin", result.error); 
+                setERROR(result.error);
+            } 
+            else{            
+                console.log("uspjesan login");
+            } 
+        } catch (error) {
+            console.error("Greška u komponenti", error);
+            setERROR("Došlo je do neočekivane greške");
+        }
     }
 
 
@@ -80,6 +88,12 @@ export default function Login() {
                                 className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900  placeholder:text-slate-400"
                             />
                         </div>
+
+                        {ERROR && (
+                            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-r-md ">
+                                <p className="text-red-700 text-sm font-medium">{ERROR}</p>
+                            </div>
+                        )}
 
                         <div>
                             <button 

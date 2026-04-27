@@ -24,7 +24,7 @@ export const useAuthStore = create((set) => ({
             return { success: true, message: response.data.message };
 
         } catch (error) {
-            return { success: false, error: error.response?.data?.message};
+            return { success: false, error: error.response.data.message};
         }finally{
             set({ isLoading: false });
         }
@@ -43,10 +43,10 @@ export const useAuthStore = create((set) => ({
 
             set({ user: data.user, token: data.token});
 
-            return { success: true };
+            return { success: true, message: response.data.message };
 
         } catch (error) {
-            return { success: false, error: error.message };
+            return { success: false, error: error.response.data.message };
         }finally{
             set({ isLoading: false });
         }

@@ -108,7 +108,7 @@ export default function Register() {
 
 
                         {ERROR && (
-                            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-r-md animate-pulse">
+                            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-r-md">
                                 <p className="text-red-700 text-sm font-medium">{ERROR}</p>
                             </div>
                         )}

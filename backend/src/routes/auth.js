@@ -62,7 +62,7 @@ export const login = async (req,res) => {
 
         if( !user ){
             return res.status(401).json({
-                message: "User not found"
+                message: "Wrong username or password"
             })
         }
 
@@ -70,7 +70,7 @@ export const login = async (req,res) => {
 
         if ( !isMatch ){
             return res.status(401).json({
-                message: "Login not successfull - wrong password"
+                message: "Wrong username or password"
             })
         }
 

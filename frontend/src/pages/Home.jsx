@@ -4,9 +4,20 @@ import { useNavigate, Link } from "react-router-dom";
 
 
 function Home() {
-  
+  const { user } = useAuthStore();
   const navigate = useNavigate();
 
+    useEffect(()=>{
+        if( user.role == "CLIENT"){
+            navigate("/createAppointment");
+        }    
+        else if(user.role == "HAIRDRESSER"){
+            navigate("/hairdresserDashboard");
+        }
+        else if(user.role == "ADMIN"){
+            navigate("/adminPanel");
+        }
+    }, [user]);
 
   return (
     
