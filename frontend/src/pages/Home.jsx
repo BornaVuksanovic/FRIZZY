@@ -8,13 +8,13 @@ function Home() {
   const navigate = useNavigate();
 
     useEffect(()=>{
-        if( user.role == "CLIENT"){
+        if( user?.role == "CLIENT"){
             navigate("/createAppointment");
         }    
-        else if(user.role == "HAIRDRESSER"){
+        else if(user?.role == "HAIRDRESSER"){
             navigate("/hairdresserDashboard");
         }
-        else if(user.role == "ADMIN"){
+        else if(user?.role == "ADMIN"){
             navigate("/adminPanel");
         }
     }, [user]);

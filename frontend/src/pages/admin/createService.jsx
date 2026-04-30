@@ -8,7 +8,7 @@ import api from "../../api.js";
 
 export default function CreateService() {
     const[name, setName] = useState("");
-    const[price, setPrice] = useState(0);
+    const[price, setPrice] = useState();
     const[duration, setDuration] = useState(0);
     const[isLoading, setIsLoading] = useState(true);
     const { token, user } = useAuthStore();
@@ -96,7 +96,7 @@ export default function CreateService() {
                             disabled={!name || !price || !duration}
                             className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold  hover:bg-indigo-900 disabled:bg-slate-200 disabled:text-slate-400"
                         >
-                            Kreiraj uslugu
+                            Kreiraj
                         </button>
                     </form>
                 </div>
