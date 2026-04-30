@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../../api.js";
 
 
 export default function CreateHairdresser() {
@@ -12,6 +13,7 @@ export default function CreateHairdresser() {
     const[lastName, setLastName] = useState("");
     const[phoneNumber, setPhoneNumber] = useState("");
     const[role, setRole] = useState("HAIRDRESSER");
+    const[ERROR, setERROR] = useState("");
     const[isLoading, setIsLoading] = useState(true);
     const { token, user } = useAuthStore();
     const navigate = useNavigate();
@@ -19,6 +21,7 @@ export default function CreateHairdresser() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setERROR("");
         setIsLoading(true)
         try {
             const formData = {username, password, firstName, lastName, phoneNumber, role};
@@ -31,13 +34,22 @@ export default function CreateHairdresser() {
             ); 
 
             console.log("Hairdresser created", response.data.user.username);
-
             toast.success('Uspješno kreiran korisnik');
             navigate("/adminPanel");
 
         } catch (error) {
-            console.log("Hairdresser creation failed", error.message);
+            console.log(error.message);
             toast.error('Neuspješno kreiran korisnik');
+  
+            // Provjeri postoji li odgovor od servera 
+            if (error.response && error.response.data) {
+                // moja poruka
+                const serverMessage = error.response.data.message;
+                setERROR(serverMessage);
+            } else {
+                // slučaju da server uopće ne odgovori 
+                setERROR("Došlo je do pogreške na mreži.");
+            }  
         }finally{
             setIsLoading(false);
         }
@@ -110,6 +122,12 @@ export default function CreateHairdresser() {
                                 className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900  placeholder:text-slate-400"
                             />
                         </div>
+
+                        {ERROR && (
+                            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-r-md">
+                                <p className="text-red-700 text-sm font-medium">{ERROR}</p>
+                            </div>
+                        )}
 
                         <div>
                             <button 

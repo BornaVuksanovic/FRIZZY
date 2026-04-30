@@ -8,8 +8,24 @@ export const registerHairdresser = async (req,res) => {
     try {
         const {username, password, firstName, lastName, phoneNumber, role} = req.body;
 
+        if( !username || !password || !firstName || !lastName || !phoneNumber){
+            return res.status(400).json({ message: "All fields are required"});
+        }
+
         if (password.length < 6){
             return res.status(400).json({ message: "Password less than 6 characters"});
+        }
+
+        if( username.length < 3){
+            return res.status(400).json({ message: "Username should be at least 3 characters long" });
+        }
+
+        const isUsernameTaken = await Prisma.user.findUnique({
+            where: { username: username }
+        });
+
+        if ( isUsernameTaken ){
+            return res.status(400).json({ message: "Username is already taken"});
         }
 
         const hashedPassword = await bcrypt.hash(password, 5);
@@ -18,15 +34,15 @@ export const registerHairdresser = async (req,res) => {
 
         
         res.status(200).json({
-            message: "User successfully created",
+            message: "Hairdresser successfully created",
             user,
         
         })
 
     } catch (error) {
-        console.log("Greska pri kreitanju usera u bazi", error);   
+        console.log("Greska pri kreitanju frizera u bazi", error);   
         res.status(400).json({
-            message: "User creation failed",
+            message: "Hairdresser creation failed",
             error: error.message
         })
     }
