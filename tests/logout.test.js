@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('tests', () => {
     test.beforeEach(async ({page}) => {
-        await page.goto('http://localhost:5173/login');
+        await page.goto('/login');
 
         await page.getByPlaceholder('Unesi korisničko ime').fill('test');
         await page.getByPlaceholder('Unesi lozinku').fill('Lozinka123');
