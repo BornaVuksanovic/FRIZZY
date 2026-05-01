@@ -4,24 +4,40 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
 jobs:
   test:
-    timeout-minutes: 60
+    # 5min
+    timeout-minutes: 5 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+        
     - name: Install dependencies
       run: npm ci
+      
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+
+    #  BUĐENJE BACKENDA: 
+    # Šalje zahtjev tvom Renderu da ga probudi PRIJE nego testovi krenu.
+    - name: Wake up Render Backend
+      run: |
+        curl -s https://frizzy.onrender.com/api/auth/login || true
+        echo "Sent wake-up call to Render..."
+
     - name: Run Playwright tests
       run: npx playwright test
+      env:
+        PLAYWRIGHT_WORKERS: 1 
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 30
+        retention-days: 3
