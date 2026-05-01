@@ -8,7 +8,10 @@ import appRouter from "./routes/appRoutes.js";
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
+
+
+const prisma = global.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
 app.use(cors());
 app.use(express.json());
@@ -20,7 +23,7 @@ app.use('/api/app', appRouter);
 
 async function ConnectDB() {
     try {
-        await prisma.$connect();
+        await prisma.$queryRaw`SELECT 1`;
         console.log("Uspješno povezan s bazom!");
     } catch (error) {
         console.error("Ne mogu se spojiti:", error);        
@@ -31,3 +34,5 @@ app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
     ConnectDB();
 })
+
+export {prisma}

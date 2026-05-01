@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { prisma } from "../index.js";
 
-const Prisma = new PrismaClient();
 
 
 export const registerHairdresser = async (req,res) => {
@@ -20,7 +20,7 @@ export const registerHairdresser = async (req,res) => {
             return res.status(400).json({ message: "Username should be at least 3 characters long" });
         }
 
-        const isUsernameTaken = await Prisma.user.findUnique({
+        const isUsernameTaken = await prisma.user.findUnique({
             where: { username: username }
         });
 
@@ -30,7 +30,7 @@ export const registerHairdresser = async (req,res) => {
 
         const hashedPassword = await bcrypt.hash(password, 5);
 
-        const user = await Prisma.user.create({data: { username, password: hashedPassword, firstName, lastName, phoneNumber, role}});
+        const user = await prisma.user.create({data: { username, password: hashedPassword, firstName, lastName, phoneNumber, role}});
 
         
         res.status(200).json({
@@ -60,7 +60,7 @@ export const createService = async (req,res) => {
             return res.status(400).json({ message: "Duration must me at least 10 minutes"});
         }
     
-        const service = await Prisma.service.create({data: { name, price, duration}});
+        const service = await prisma.service.create({data: { name, price, duration}});
 
         
         res.status(200).json({
@@ -81,7 +81,7 @@ export const createAppointment = async (req,res) => {
     try {
         const {startDate, clientId, hairdresserId, serviceId} = req.body;
 
-        const appointment = await Prisma.appointment.create({data: {startDate, clientId, hairdresserId, serviceId}});
+        const appointment = await prisma.appointment.create({data: {startDate, clientId, hairdresserId, serviceId}});
 
         res.status(201).json({
             message: "Appointment successfully creted",
@@ -118,7 +118,7 @@ export const getHairdresserAppointments = async (req, res) => {
             dateFilter = { lt: now };
         }
 
-        const appointments = await Prisma.appointment.findMany({
+        const appointments = await prisma.appointment.findMany({
             where: {
                 hairdresserId: parseInt(hairdresserId),
                 startDate: dateFilter
@@ -165,7 +165,7 @@ export const getAppointments = async (req, res) => {
             dateFilter = { lt: now };
         }
 
-        const appointments = await Prisma.appointment.findMany({
+        const appointments = await prisma.appointment.findMany({
             where: {
                 startDate: dateFilter
             },
@@ -195,7 +195,7 @@ export const getClientAppointments = async (req, res) => {
             return res.status(400).json({ message: "Nema ID-a" });
         }
 
-        const appointments = await Prisma.appointment.findMany({
+        const appointments = await prisma.appointment.findMany({
             where: {
                 clientId: parseInt(clientId),
             },
@@ -221,7 +221,7 @@ export const getClientAppointments = async (req, res) => {
 
 export const getHairdressers = async (req,res) => {
     try {  
-        const hairdressers = await Prisma.user.findMany({
+        const hairdressers = await prisma.user.findMany({
             where: {
                 role: "HAIRDRESSER"
             },
@@ -247,7 +247,7 @@ export const getHairdressers = async (req,res) => {
 
 export const getServices = async (req,res) => {
     try {  
-        const services = await Prisma.service.findMany();
+        const services = await prisma.service.findMany();
 
         res.status(200).json({
             message: "List of services",
@@ -266,7 +266,7 @@ export const deleteAppointment = async (req,res) => {
     try {
         const { id } = req.query;
 
-        const deletedApp = await Prisma.appointment.delete({
+        const deletedApp = await prisma.appointment.delete({
             where: {
                 id: parseInt(id)
             }
