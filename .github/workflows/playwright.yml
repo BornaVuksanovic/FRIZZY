@@ -29,6 +29,7 @@ jobs:
       run: |
         curl -s https://frizzy.onrender.com/api/auth/login || true
         echo "Sent wake-up call to Render..."
+        sleep 30
 
     - name: Run Playwright tests
       run: npx playwright test
