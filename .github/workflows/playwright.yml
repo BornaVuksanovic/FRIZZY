@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     # 5min
-    timeout-minutes: 5 
+    timeout-minutes: 15 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -29,10 +29,10 @@ jobs:
       run: |
         curl -s https://frizzy.onrender.com/api/auth/login || true
         echo "Sent wake-up call to Render..."
-        sleep 30
+        sleep 60
 
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --retries=0
       env:
         PLAYWRIGHT_WORKERS: 1 
 
