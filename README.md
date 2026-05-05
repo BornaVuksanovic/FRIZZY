@@ -18,6 +18,21 @@ dok zaposlenici imaju uvid u dnevni raspored s brzim pristupom kontakt podacima 
 * State Management & API: Upravljanje stanjem aplikacije (autentifikacija, tokeni, podaci o terminima) 
 kroz React hookove i asinkronu komunikaciju s backendom.
 
+### Testiranje:
+End-to-End (E2E) Testiranje (Playwright):
+* Implementirao sam  E2E testove koristeći Playwright koji simuliraju stvarne korisničke scenarije, uključujući registraciju, prijavu, proces rezervacije termina, kreiranje usluga itd.
+  
+* Postavio sam Automated Testing Pipeline na GitHub Actions, čime sam osigurao da svaki novi "push" koda prolazi automatsku provjeru ispravnosti prije deploymenta.
+
+
+
+API i Integracijsko Testiranje (Postman):
+
+* Izradio sam  Postman kolekcije za testiranje backend ruta, osiguravajući ispravnost HTTP statusnih kodova (200, 201, 401, 403, 500) i strukture JSON odgovora.
+
+* Automatizirao sam proces testiranja pomoću Pre-request i Post-request skripti za generiranje dinamičkih testnih podataka i Test skripti za automatsku validaciju JWT tokena.
+
+
 ### Tehnološki Stog (Tech Stack):
 * Frontend:   React, Vue.js, JavaScript, Tailwind CSS
 * Backend:   Node.js, Express.js
@@ -42,4 +57,12 @@ kroz React hookove i asinkronu komunikaciju s backendom.
 
 ## FRIZER
 <img width="1876" height="822" alt="image" src="https://github.com/user-attachments/assets/d75c03f3-facd-416d-87e9-bcbef7affbdf" />
+
+## PLAYWRIGHT TESTOVI
+<img width="1271" height="901" alt="image" src="https://github.com/user-attachments/assets/b58e5f02-528f-48cb-b2d2-dec618b51658" />
+
+<img width="1301" height="877" alt="image" src="https://github.com/user-attachments/assets/33fc71ad-7bf4-4444-ad50-bbfefc4c5c86" />
+
+<img width="1259" height="302" alt="image" src="https://github.com/user-attachments/assets/db3eeacf-eca9-424a-a6c2-af02ab347566" />
+
 
