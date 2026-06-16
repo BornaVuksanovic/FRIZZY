@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
-
-const Prisma = new PrismaClient();
+import { prisma } from "./index.js";
 
 export const protectRoute = async (req,res,next) => {
     try {
@@ -10,7 +9,7 @@ export const protectRoute = async (req,res,next) => {
 
         const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await Prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: { id: verifyToken.userId }
         })
 
@@ -22,5 +21,18 @@ export const protectRoute = async (req,res,next) => {
     } catch (error) {
         console.error("Authorization error:", error.message);
         res.status(401).json({ message: "Token is not vlaid, error caught"});
+    }
+}
+
+
+export const restrictTo = (...roles) => {
+    return (req, res, next) => {
+        // req.user je postavljen u prethodnom koraku
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ 
+                message: "You don't have permission for this action" 
+            });
+        }
+        next();
     }
 }
