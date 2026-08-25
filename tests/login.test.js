@@ -6,7 +6,7 @@ test.describe('tests', () => {
     });
 
     test('Valid login test', async ({ page }) => {
-        await page.getByPlaceholder('Unesi korisničko ime').fill('testA');
+        await page.getByPlaceholder('Unesi korisničko ime').fill('GRESKA');
         await page.getByPlaceholder('Unesi lozinku').fill('Lozinka123');
         await page.getByRole('button', { name: 'Prijavi se' }).click();
 
