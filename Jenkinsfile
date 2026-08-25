@@ -35,4 +35,10 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo 'Spremam Playwright QA artefakte...'
+            archiveArtifacts artifacts: 'playwright-report/**, test-results/**', allowEmptyArchive: true
+        }
+    }
 }
