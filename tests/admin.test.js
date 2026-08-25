@@ -124,4 +124,26 @@ test.describe('tests', () => {
         await expect(page.getByText('Neuspješno kreiran korisnik')).toBeVisible();
     });
 
+
+    test('Future appointments page', async ({page}) => {
+
+        await page.getByRole( 'link', { name: 'Nadolazeći termini'}).click();
+        await expect(page.getByRole('heading',{ name: 'Budući termini'})).toBeVisible();
+        
+
+    });
+
+    test('Past appointments page', async ({page}) => {
+
+        await page.getByRole( 'link', { name: 'Prošli termini'}).click();
+        await expect(page.getByRole('heading',{ name: 'Prošli termini'})).toBeVisible();
+
+    });
+
+    test('Today appointments page', async ({page}) => {
+
+        await page.getByRole( 'link', { name: 'Današnji termini'}).click();
+        await expect(page.getByRole('heading',{ name: 'Današnji termini'})).toBeVisible();
+    });
+
 });
