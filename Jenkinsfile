@@ -34,11 +34,19 @@ pipeline {
                 sh 'npx playwright test'
             }
         }
+
+        stage('5. JMeter Stres Testiranje') {
+            steps {
+                echo 'Pokrećem JMeter performansni test...'
+                sh 'jmeter -n -t jmeter/ProjektFrizzy.jmx -l jmeter-results.jtl'
+            }
+        }
+
     }
     post {
         always {
-            echo 'Spremam Playwright QA artefakte...'
-            archiveArtifacts artifacts: 'playwright-report/**, test-results/**', allowEmptyArchive: true
+            echo 'Spremam QA artefakte (Playwright + JMeter)...'
+            archiveArtifacts artifacts: 'playwright-report/**, test-results/**, jmeter-results.jtl', allowEmptyArchive: true
         }
     }
 }
