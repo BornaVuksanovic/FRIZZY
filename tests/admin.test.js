@@ -28,6 +28,36 @@ test.describe('tests', () => {
         await expect(page.getByText(uniqueService)).toBeVisible();
     });
 
+    test('Negative price service creation', async ({page}) => {
+
+        await page.getByRole( 'link', { name: 'Dodaj uslugu'}).click();
+        await expect(page.getByText('Kreiraj uslugu')).toBeVisible();
+
+        const uniqueService = `service_${Date.now()}`;
+        await page.getByPlaceholder("Unesi naziv usluge").fill(uniqueService);
+        await page.getByPlaceholder("Unesi cijenu").fill('-10');
+        await page.locator('div:has-text("Vremensko trajanje") >> select').selectOption({ index: 1 });
+
+        await page.getByRole('button', { name: 'Kreiraj' }).click();
+
+        await expect(page.getByText('Neuspješno kreirana usluga')).toBeVisible();
+    });
+
+    test('Text input for price service creation', async ({page}) => {
+
+        await page.getByRole( 'link', { name: 'Dodaj uslugu'}).click();
+        await expect(page.getByText('Kreiraj uslugu')).toBeVisible();
+
+        const uniqueService = `service_${Date.now()}`;
+        await page.getByPlaceholder("Unesi naziv usluge").fill(uniqueService);
+        await page.getByPlaceholder("Unesi cijenu").fill('text');
+        await page.locator('div:has-text("Vremensko trajanje") >> select').selectOption({ index: 1 });
+
+        await page.getByRole('button', { name: 'Kreiraj' }).click();
+
+        await expect(page.getByText('Neuspješno kreirana usluga')).toBeVisible();
+    });
+
     test('Successul hairdresser creation', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj radnika'}).click();

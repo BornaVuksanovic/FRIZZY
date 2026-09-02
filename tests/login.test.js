@@ -42,7 +42,7 @@ test.describe('tests', () => {
         await page.getByPlaceholder('Unesi lozinku').fill('Lozinka');
         await page.getByRole('button', { name: 'Prijavi se' }).click();
 
-        await expect(page.getByText('Wrong Username or Password')).toBeVisible();
+        await expect(page.getByText('Wrong username or password')).toBeVisible();
     })
 
 });

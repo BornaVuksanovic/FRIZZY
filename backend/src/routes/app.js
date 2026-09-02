@@ -70,7 +70,7 @@ export const createService = async (req,res) => {
 
     } catch (error) {
         console.log("Error service creation", error);   
-        res.status(400).json({
+        res.status(500).json({
             message: "Service creation failed",
             error: error.message
         })
@@ -102,7 +102,7 @@ export const getHairdresserAppointments = async (req, res) => {
         const { hairdresserId, date, type} = req.query; // type: today,upcoming, past
 
         if (!hairdresserId) {
-            return res.status(400).json({ message: "Nema ID-a frizera" });
+            return res.status(400).json({ message: "Missing hairdresser ID" });
         }
 
         let dateFilter = {};
@@ -142,7 +142,7 @@ export const getHairdresserAppointments = async (req, res) => {
         })
     } catch (error) {
         console.error(error);
-        res.status(400).json({
+        res.status(500).json({
             message: "Faild to get hairdressers appointments",
             error: error.message
         })
@@ -192,7 +192,7 @@ export const getClientAppointments = async (req, res) => {
         const { clientId } = req.query;
 
         if (!clientId) {
-            return res.status(400).json({ message: "Nema ID-a" });
+            return res.status(400).json({ message: "Missing ID" });
         }
 
         const appointments = await prisma.appointment.findMany({
@@ -212,7 +212,7 @@ export const getClientAppointments = async (req, res) => {
         })
     } catch (error) {
         console.error("PRISMA ERROR:", error);
-        res.status(400).json({
+        res.status(500).json({
             message: "Faild to get client appointments",
             error: error.message
         })
@@ -277,7 +277,7 @@ export const deleteAppointment = async (req,res) => {
             deletedApp
         })
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             message: "Faild to deleat Appointment",
             error: error.message
         })       
