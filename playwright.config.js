@@ -38,8 +38,16 @@ reporter: [
 
   /* Configure projects for major browsers */
   projects: [
+    // Projekt za API testove
     {
-      name: 'chromium',
+      name: 'API Tests',
+      testDir: './tests/api',
+    },
+
+    //Projekt za E2E testove
+    {
+      name: 'E2E Tests',
+      testDir: './tests/e2e',
       use: { ...devices['Desktop Chrome'] },
     },
 
