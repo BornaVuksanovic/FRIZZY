@@ -30,7 +30,7 @@ pipeline {
 
         stage('4. Pokretanje Playwright testova') {
             steps {
-                echo 'Pokrećem Playwright E2E testove...'
+                echo 'Pokrećem Playwright testove...'
                 sh 'npx playwright test'
             }
         }
