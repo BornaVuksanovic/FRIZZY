@@ -10,7 +10,7 @@ test.describe('API Tests - Protected Routes', () => {
     const service = "service_" + randomPart;
     const hairdresser = "hairdresser_" + randomPart;
 
-    const baseURL = 'http://localhost:1000';
+    const baseURL = 'https://frizzy.onrender.com';
 
     async function createAuthContext(playwright, username, password) {
         const ctx = await playwright.request.newContext();
