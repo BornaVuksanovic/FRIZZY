@@ -139,7 +139,7 @@ test.describe('API Tests - Protected Routes', () => {
 
 
         test('Unauthenticated user cannot access hairdresser appointments', async ({ request }) => {
-            const response = await request.get('http://localhost:1000/api/app/getHairdresserAppointments', {
+            const response = await request.get('https://frizzy.onrender.com/api/app/getHairdresserAppointments', {
             params: { hairdresserId: '2', type: 'upcoming' }
             });
 
@@ -178,7 +178,7 @@ test.describe('API Tests - Protected Routes', () => {
         });
 
         test('Unauthenticated user is rejected - get client appointments', async ({ request }) => {
-            const response = await request.get('http://localhost:1000/api/app/getClientAppointments', {
+            const response = await request.get('https://frizzy.onrender.com/api/app/getClientAppointments', {
             params: { clientId: '4' }
             });
 
