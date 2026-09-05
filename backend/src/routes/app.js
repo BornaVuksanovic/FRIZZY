@@ -33,7 +33,7 @@ export const registerHairdresser = async (req,res) => {
         const user = await prisma.user.create({data: { username, password: hashedPassword, firstName, lastName, phoneNumber, role}});
 
         
-        res.status(200).json({
+        res.status(201).json({
             message: "Hairdresser successfully created",
             user,
         
@@ -52,8 +52,12 @@ export const createService = async (req,res) => {
     try {
         const {name, price, duration} = req.body;
 
+        if (!name || !price || !duration ) {
+            return res.status(400).json({ message: "Missing required fields: name, price, or duration" });
+        }
+
         if (price < 0){
-            return res.status(400).json({ message: "Price can't be negatove number"});
+            return res.status(400).json({ message: "Price can't be negative number"});
         }
 
         if (duration <= 9){
@@ -63,7 +67,7 @@ export const createService = async (req,res) => {
         const service = await prisma.service.create({data: { name, price, duration}});
 
         
-        res.status(200).json({
+        res.status(201).json({
             message: "Service successfully created",
             service
         })
@@ -80,6 +84,10 @@ export const createService = async (req,res) => {
 export const createAppointment = async (req,res) => {
     try {
         const {startDate, clientId, hairdresserId, serviceId} = req.body;
+
+        if (!startDate || !clientId || !hairdresserId || !serviceId ) {
+            return res.status(400).json({ message: "Missing required fields: name, price, or duration" });
+        }
 
         const appointment = await prisma.appointment.create({data: {startDate, clientId, hairdresserId, serviceId}});
 
@@ -265,20 +273,34 @@ export const getServices = async (req,res) => {
 export const deleteAppointment = async (req,res) => {
     try {
         const { id } = req.query;
+        const appointmentId = parseInt(id);
+
+        if ( !appointmentId ) {
+            return res.status(400).json({ message: "Missing appointment ID" });
+        }
+
+        const existingApp = await prisma.appointment.findUnique({
+            where: { id: appointmentId }
+        });
+
+        if (!existingApp) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
 
         const deletedApp = await prisma.appointment.delete({
             where: {
-                id: parseInt(id)
+                id: appointmentId
             }
         });
 
         res.status(200).json({
             message: "Appointment deleted",
             deletedApp
-        })
+        });
+
     } catch (error) {
         res.status(500).json({
-            message: "Faild to deleat Appointment",
+            message: "Failed to deleat Appointment",
             error: error.message
         })       
     }
