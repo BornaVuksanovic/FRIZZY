@@ -2,6 +2,7 @@ import express from "express";
 import { protectRoute } from "../middleware.js";
 import { restrictTo } from "../middleware.js";
 import { getHairdressers } from "./app.js";
+import { getClients } from "./app.js";
 import { testToken } from "./app.js";
 import { registerHairdresser } from "./app.js";
 import { createService } from "./app.js";
@@ -15,6 +16,7 @@ import { deleteAppointment } from "./app.js";
 const appRouter = express.Router();
 
 appRouter.route('/getHairdressers').get(protectRoute,getHairdressers);
+appRouter.route('/getClients').get(protectRoute,getClients);
 appRouter.route('/getServices').get(protectRoute,getServices);
 appRouter.route('/testToken').get(protectRoute,testToken);
 appRouter.route('/registerHairdresser').post(protectRoute,restrictTo('ADMIN'),registerHairdresser);

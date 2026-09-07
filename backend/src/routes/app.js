@@ -253,6 +253,32 @@ export const getHairdressers = async (req,res) => {
     }
 }
 
+export const getClients = async (req,res) => {
+    try {  
+        const clients = await prisma.user.findMany({
+            where: {
+                role: "CLIENT"
+            },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true
+            }
+        });
+
+        res.status(200).json({
+            message: "List of clients",
+            clients
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: "Failed to fetch clients",
+            error: error.message
+        })
+    }
+}
+
 export const getServices = async (req,res) => {
     try {  
         const services = await prisma.service.findMany();

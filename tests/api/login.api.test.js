@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('API Tests - Login', () => {
+test.describe("Login API", () => {
 
-  test('Successful login and returns status 200 and token', async ({ request }) => {
+  const baseURL = "https://frizzy.onrender.com";
+
+  test("Successful login", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
+    const response = await request.post(`${baseURL}/api/auth/login`, {
       data: {
         username: "test",
         password: "Lozinka123" 
@@ -15,18 +17,16 @@ test.describe('API Tests - Login', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON).toHaveProperty('token'); 
-
+    expect(responseJSON).toHaveProperty("token"); 
+    expect(responseJSON).toHaveProperty("user");
     expect(responseJSON.user.username).toBe("test")
 
   });
 
 
-  test('Missing username', async ({ request }) => {
+  test("Login with missing username", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
+    const response = await request.post(`${baseURL}/api/auth/login`, {
       data: {
         username: "",
         password: "Lozinka123" 
@@ -37,15 +37,14 @@ test.describe('API Tests - Login', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
     expect(responseJSON.message).toBe("Missing Username or Password");
 
   });
 
-    test('Missing password', async ({ request }) => {
+  
+  test("Login with missing password", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
+    const response = await request.post(`${baseURL}/api/auth/login`, {
       data: {
         username: "test",
         password: "" 
@@ -55,17 +54,15 @@ test.describe('API Tests - Login', () => {
     expect(response.status()).toBe(400);
 
     const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
     
     expect(responseJSON.message).toBe("Missing Username or Password");
 
   });
 
     
-  test('Wrong username', async ({ request }) => {
+  test("Login with invalid username", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
+    const response = await request.post(`${baseURL}/api/auth/login`, {
       data: {
         username: "Wrong",
         password: "Lozinka123" 
@@ -75,18 +72,15 @@ test.describe('API Tests - Login', () => {
     expect(response.status()).toBe(401);
 
     const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
     
     expect(responseJSON.message).toBe("Wrong username or password");
 
   });
 
 
-
-  test('Wrong password', async ({ request }) => {
+  test("Login with invalid password", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
+    const response = await request.post(`${baseURL}/api/auth/login`, {
       data: {
         username: "test",
         password: "Wrong123" 
@@ -96,39 +90,30 @@ test.describe('API Tests - Login', () => {
     expect(response.status()).toBe(401);
 
     const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
     
     expect(responseJSON.message).toBe("Wrong username or password");
 
   });
 
 
-/* Bug found
-
-  test('XSS username input', async ({ request }) => {
+  test("Login with empty request body", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
-      data: {
-        username: "<script>alert(1)</script>",
-        password: "Lozinka123" 
-      }
+    const response = await request.post(`${baseURL}/api/auth/login`, {
+      data: {}
     });
 
-    expect(response.status()).toBe(401);
+    expect(response.status()).toBe(400);
 
     const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
     
-    expect(responseJSON.message).toBe("Wrong username or password");
+    expect(responseJSON.message).toBe("Missing Username or Password");
 
   });
-*/
 
-  test('SQL Injection username input', async ({ request }) => {
+
+  test("Login with SQL injection in username", async ({ request }) => {
     
-    const response = await request.post('https://frizzy.onrender.com/api/auth/login', {
+    const response = await request.post(`${baseURL}/api/auth/login`, {
       data: {
         username: "' OR '1'='1",
         password: "Lozinka123" 
@@ -138,10 +123,9 @@ test.describe('API Tests - Login', () => {
     expect(response.status()).toBe(401);
 
     const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
     
     expect(responseJSON.message).toBe("Wrong username or password");
 
   });
+
 });

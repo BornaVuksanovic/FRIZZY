@@ -1,13 +1,16 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('API Tests - Client registration', () => {
+test.describe('Client Registration API', () => {
+
+  const baseURL = "https://frizzy.onrender.com";
+
+  const randomPart = Math.floor(Math.random() * 10000);
+  const username = "user_" + randomPart;
+
 
   test('Successful registration', async ({ request }) => {
 
-    const randomPart = Math.floor(Math.random() * 10000);
-    const username = "user_" + randomPart;
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: username,
         password: "lozinka123",
@@ -21,8 +24,6 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
     expect(responseJSON).toHaveProperty('token'); 
     expect(responseJSON.user.username).toBe(username);
     expect(responseJSON.message).toBe("User successfully created");
@@ -30,9 +31,9 @@ test.describe('API Tests - Client registration', () => {
   });
 
 
-  test('Missing username', async ({ request }) => {
+  test('Registration with missing username', async ({ request }) => {
 
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         //username: username,
         password: "lozinka123",
@@ -46,19 +47,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON.message).toContain("required");
+    expect(responseJSON.message).toBe("All fields are required");
 
   });
 
 
-  test('Missing password', async ({ request }) => {
+  test('Registration with missing password', async ({ request }) => {
 
-    const randomPart = Math.floor(Math.random() * 10000);
-    const username = "user_" + randomPart;
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: username,
         //password: "lozinka123",
@@ -72,19 +68,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON.message).toContain("required");
+    expect(responseJSON.message).toBe("All fields are required");
 
   });
 
 
-  test('Missing firstName', async ({ request }) => {
+  test('Registration with missing firstName', async ({ request }) => {
 
-    const randomPart = Math.floor(Math.random() * 10000);
-    const username = "user_" + randomPart;
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: username,
         password: "lozinka123",
@@ -98,19 +89,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON.message).toContain("required");
+    expect(responseJSON.message).toBe("All fields are required");
 
   });
 
 
-  test('Missing lastName', async ({ request }) => {
+  test('Registration with missing lastName', async ({ request }) => {
 
-    const randomPart = Math.floor(Math.random() * 10000);
-    const username = "user_" + randomPart;
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: username,
         password: "lozinka123",
@@ -124,20 +110,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON.message).toContain("required");
+    expect(responseJSON.message).toBe("All fields are required");
 
   });
 
 
+  test('Registration with missing phoneNumber', async ({ request }) => {
 
-  test('Missing phoneNumber', async ({ request }) => {
-
-    const randomPart = Math.floor(Math.random() * 10000);
-    const username = "user_" + randomPart;
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: username,
         password: "lozinka123",
@@ -151,19 +131,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON.message).toContain("required");
+    expect(responseJSON.message).toBe("All fields are required");
 
   });
 
 
-  test('Short password', async ({ request }) => {
+  test('Registration with short password', async ({ request }) => {
 
-    const randomPart = Math.floor(Math.random() * 10000);
-    const username = "user_" + randomPart;
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: username,
         password: "ops",
@@ -177,16 +152,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
     expect(responseJSON.message).toBe("Password less than 6 characters");
 
   });
 
 
-  test('Existing username', async ({ request }) => {
+  test('Registration with existing username', async ({ request }) => {
 
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
         username: "test",
         password: "Lozinka123",
@@ -200,16 +173,14 @@ test.describe('API Tests - Client registration', () => {
 
     const responseJSON = await response.json();
 
-    console.log('Backend odgovor:', responseJSON);
-
     expect(responseJSON.message).toBe("Username is already taken");
 
   });
 
 
-    test('Empty payload', async ({ request }) => {
+  test('Registration with empty payload', async ({ request }) => {
 
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
+    const response = await request.post(`${baseURL}/api/auth/register`, {
       data: {
 
       }
@@ -218,34 +189,9 @@ test.describe('API Tests - Client registration', () => {
     expect(response.status()).toBe(400);
 
     const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
 
     expect(responseJSON.message).toBe("All fields are required");
 
   });
 
-  /* Bug found
-    test('XSS username input', async ({ request }) => {
-
-    const response = await request.post('https://frizzy.onrender.com/api/auth/register', {
-      data: {
-        username: "<script>alert(1)</script>",
-        password: "Lozinka123",
-        firstName: "Test",
-        lastName: "Testic",
-        phoneNumber: "0123456789"       
-      }
-    });
-
-    expect(response.status()).toBe(400);
-
-    const responseJSON = await response.json();
-
-    console.log('Backend odgovor:', responseJSON);
-
-    expect(responseJSON.message).toBe("Invalid username input - allowed characters [a-zA-Z0-9_.-]");
-
-  });
-  */
 });
