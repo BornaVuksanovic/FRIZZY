@@ -6,7 +6,7 @@ Razvio sam kompletnu Full-stack web aplikaciju za automatizaciju rezervacija u f
 
 ---
 
-### QA Highlights (Testiranje)
+### QA Testiranje
 
 Ovaj repozitorij demonstrira napredne koncepte osiguranja kvalitete i pokriva kompletan testni ciklus:
 
@@ -16,9 +16,14 @@ Ovaj repozitorij demonstrira napredne koncepte osiguranja kvalitete i pokriva ko
 *   **Backend QA Refactoring:** Tijekom pisanja testova otkriveni su i dokumentirani bugovi. Refaktorirao sam Express kontrolere kako bi backend umjesto generičkih 500 Internal Server Error vraćao semantički ispravne odgovore 400 Bad Request, 404 Not Found.
 *   **CI/CD Pipeline:** Postavljen automatizirani integracijski proces (GitHub Actions / Jenkins) koji pokreće kompletne testne pakete pri svakom novom *pushu* koda, osiguravajući ispravnost prije produkcije.
 *   **Performance & Load Testiranje:** Koristeći **Apache JMeter** testirana je stabilnost i propusnost ključnih API ruta pod opterećenjem simuliranih korisnika.
-*   **Manual QA & Dokumentacija:** Testni procesi i *Test Caseovi* detaljno su dokumentirani u strukturiranim Google Sheets tablicama.
+*   **Dokumentacija:** Testni procesi i *Test Caseovi* detaljno su dokumentirani u Google Sheets tablicama - link https://docs.google.com/spreadsheets/d/1c2WNBRiw_AOMyn9uC_YHJ4IAGiZnm2sVHMlYI_j_as4/edit?usp=sharing.
 
----
+#### Postman API Testing 
+
+Uz Playwright API testni paket, projekt uključuje kompletiranu **Postman kolekciju** namijenjenu za istraživačko testiranje i brzu validaciju ruta.
+
+* **Dinamičke Skripte:** Implementirane *Pre-request* i *Post-request* skripte za automatsko generiranje testnih podataka te automatsko spremanje i prosljeđivanje JWT tokena u zaglavljima.
+* **Assertions & Validacija:** Pokriveni scenariji za provjeru strukturiranosti JSON odgovora, točnosti sheme i očekivanih HTTP statusnih kodova.
 
 ### Ključne funkcionalnosti aplikacije
 
