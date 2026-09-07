@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('tests', () => {
+test.describe('Admin functionality', () => {
+
     test.beforeEach(async ({page}) => {
         await page.goto('/login');
 
@@ -28,7 +29,7 @@ test.describe('tests', () => {
         await expect(page.getByText(uniqueService)).toBeVisible();
     });
 
-    test('Negative price service creation', async ({page}) => {
+    test('Service creation with negative price', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj uslugu'}).click();
         await expect(page.getByText('Kreiraj uslugu')).toBeVisible();
@@ -43,7 +44,7 @@ test.describe('tests', () => {
         await expect(page.getByText('Neuspješno kreirana usluga')).toBeVisible();
     });
 
-    test('Text input for price service creation', async ({page}) => {
+    test('Service creation with text as price', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj uslugu'}).click();
         await expect(page.getByText('Kreiraj uslugu')).toBeVisible();
@@ -58,7 +59,7 @@ test.describe('tests', () => {
         await expect(page.getByText('Neuspješno kreirana usluga')).toBeVisible();
     });
 
-    test('Successul hairdresser creation', async ({page}) => {
+    test('Successful hairdresser creation', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj radnika'}).click();
         await expect(page.getByText('Kreiraj račun frizeru')).toBeVisible();
@@ -77,13 +78,10 @@ test.describe('tests', () => {
         await expect(page.getByText(uniqueName)).toBeVisible();
     });
     
-    test('Missing field hairdresser creation', async ({page}) => {
+    test('Hairdresser creation with missing username', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj radnika'}).click();
         await expect(page.getByText('Kreiraj račun frizeru')).toBeVisible();
-
-        //const uniqueHairdresser = `hairdresser_${Date.now()}`;
-        //await page.getByPlaceholder("Unesi korisničko ime").fill(uniqueHairdresser);
 
         await page.getByPlaceholder("Unesi lozinku").fill('lozinka123');
         const uniqueName = `friz_${Date.now()}`;
@@ -98,7 +96,7 @@ test.describe('tests', () => {
     });
 
 
-    test('Short username hairdresser creation', async ({page}) => {
+    test('Hairdresser creation with short username', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj radnika'}).click();
         await expect(page.getByText('Kreiraj račun frizeru')).toBeVisible();
@@ -116,7 +114,7 @@ test.describe('tests', () => {
     });
 
 
-    test('Short password hairdresser creation', async ({page}) => {
+    test('Hairdresser creation with short password', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj radnika'}).click();
         await expect(page.getByText('Kreiraj račun frizeru')).toBeVisible();
@@ -136,7 +134,7 @@ test.describe('tests', () => {
     });
    
     
-    test('Existing username hairdresser creation', async ({page}) => {
+    test('Hairdresser creation with existing username', async ({page}) => {
 
         await page.getByRole( 'link', { name: 'Dodaj radnika'}).click();
         await expect(page.getByText('Kreiraj račun frizeru')).toBeVisible();

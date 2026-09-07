@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('tests', () => {
+test.describe('Security', () => {
     test.beforeEach(async ({page}) => {
         await page.goto('/');
     });
 
-    test('Admin panel route', async ({page}) => {
+    test('Navigate to admin panel without login', async ({page}) => {
 
         await page.goto('/adminPanel');
 

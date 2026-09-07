@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('tests', () => {
+test.describe('Client Registration', () => {
     test.beforeEach(async ({page}) => {
         await page.goto('/register');
     });
 
-    test('Valid registration', async ({page}) => {
+    test('Successful registration', async ({page}) => {
         const uniqueUser = `user_${Date.now()}`;
         await page.getByPlaceholder('Unesi korisničko ime').fill(uniqueUser);
         await page.getByPlaceholder('Unesi lozinku').fill('lozinka1');
@@ -18,7 +18,7 @@ test.describe('tests', () => {
 
     });
 
-    test('Short username', async ({page}) => {
+    test('Registration with short username', async ({page}) => {
         await page.getByPlaceholder('Unesi korisničko ime').fill('re');
         await page.getByPlaceholder('Unesi lozinku').fill('lozinka1');
         await page.getByPlaceholder('Unesi ime').fill('ime1');
@@ -30,7 +30,7 @@ test.describe('tests', () => {
     
     });
 
-    test('Short password', async ({page}) => {
+    test('Registration with short password', async ({page}) => {
         await page.getByPlaceholder('Unesi korisničko ime').fill('register1');
         await page.getByPlaceholder('Unesi lozinku').fill('loz');
         await page.getByPlaceholder('Unesi ime').fill('ime1');
@@ -42,8 +42,7 @@ test.describe('tests', () => {
     
     });
 
-    test('Missing field', async ({page}) => {
-        //await page.getByPlaceholder('Unesi korisničko ime').fill('register1');
+    test('Registration with missing field', async ({page}) => {
         await page.getByPlaceholder('Unesi lozinku').fill('lozinka1');
         await page.getByPlaceholder('Unesi ime').fill('ime1');
         await page.getByPlaceholder('Unesi prezime').fill('prezime1');
@@ -55,7 +54,7 @@ test.describe('tests', () => {
     });
 
 
-    test('Existing username', async ({page}) => {
+    test('Registration with existing username', async ({page}) => {
         // Username : register1 exists in database
         await page.getByPlaceholder('Unesi korisničko ime').fill('register1');
         await page.getByPlaceholder('Unesi lozinku').fill('lozinka1');

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('tests', () => {
+test.describe('Client appointment functionality', () => {
     test.beforeEach(async ({page}) => {
         await page.goto('/login');
 
@@ -12,14 +12,14 @@ test.describe('tests', () => {
 
     });
 
-    test('Successful creation', async ({page}) => {
+    test('Successful appointment creation', async ({page}) => {
         await page.locator('div:has-text("Usluga") >> select').first().selectOption({ value: '1' });
 
         await page.locator('div:has-text("Frizer") >> select').last().selectOption({ value: '6' });
 
         await page.getByRole('button', { name: 'Dalje' }).click();
 
-        // --- KORAK 2: Odabir datuma i termina ---
+        // Odabir datuma i termina 
 
         await expect(page.getByText('Odaberi datum i vrijeme')).toBeVisible();
 
